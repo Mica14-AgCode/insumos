@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-import plotly.express as px
 import numpy as np
 
 # Configuración de la página
@@ -390,19 +389,13 @@ def main():
     with tab4:
         st.header("Productos por Categoría")
         
-        # Gráfico de distribución por tipo
+        # Gráfico de distribución por tipo usando componentes nativos de Streamlit
         st.subheader("Distribución de productos por categoría")
         conteo_tipos = df['tipo'].value_counts().reset_index()
         conteo_tipos.columns = ['Tipo', 'Cantidad']
         
-        fig = px.bar(
-            conteo_tipos, 
-            x='Tipo', 
-            y='Cantidad',
-            color='Tipo',
-            title='Cantidad de productos por categoría'
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        # Crear gráfico de barras usando Streamlit
+        st.bar_chart(conteo_tipos.set_index('Tipo'))
         
         # Mostrar productos por categoría en tabs
         categoria_tabs = st.tabs(sorted(df['tipo'].unique().tolist()))
@@ -439,17 +432,11 @@ def main():
                         st.metric("Precio mínimo", f"{precio_min:.2f}")
                     
                     with col2:
-                        # Gráfico de precios para esta categoría
-                        if len(productos_tipo) > 1:  # Solo crear gráfico si hay más de un producto
-                            productos_ordenados = productos_tipo.sort_values('precio', ascending=False).head(10)
-                            fig = px.bar(
-                                productos_ordenados,
-                                x='producto',
-                                y='precio',
-                                title=f'Top 10 productos más caros - {tipo}',
-                                labels={'producto': 'Producto', 'precio': 'Precio'}
-                            )
-                            st.plotly_chart(fig, use_container_width=True)
+                        # Mostrar estadísticas en lugar de gráfico
+                        st.write("**Estadísticas de precios:**")
+                        st.write(f"- Mediana: {productos_tipo['precio'].median():.2f}")
+                        st.write(f"- Desviación estándar: {productos_tipo['precio'].std():.2f}")
+                        st.write(f"- Cantidad de productos: {len(productos_tipo)}")
 
     # Pie de página
     st.divider()
