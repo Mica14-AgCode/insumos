@@ -2,14 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import numpy as np
-import streamlit.components.v1 as components
 
 # Configuración de la página
 st.set_page_config(
     page_title="Sistema de Gestión de Agroquímicos",
     page_icon="🌱",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
 # Función para convertir "s/d" a NaN
@@ -247,516 +245,172 @@ def normalizar_texto(texto):
         texto = texto.replace("24d", "24 d").replace("24 d", "2 4 d")
     return texto
 
-# Función para obtener sugerencias para el dropdown estilo Google
-def obtener_sugerencias(df, texto, max_sugerencias=10):
-    if not texto or len(texto) < 2:
-        return []
+# Función mejorada para buscar productos
+def buscar_productos_flexible(df, busqueda):
+    if not busqueda:
+        return None
     
-    # Normalizar el texto de búsqueda
-    texto_norm = normalizar_texto(texto)
+    # Normalizar la búsqueda
+    busqueda_norm = normalizar_texto(busqueda)
+    busqueda_tokens = set(busqueda_norm.split())
     
     # Normalizar las columnas del DataFrame para la búsqueda
     df['producto_norm'] = df['producto'].apply(normalizar_texto)
     df['principio_activo_norm'] = df['principio_activo'].apply(lambda x: normalizar_texto(x) if pd.notna(x) else '')
     
-    # Calcular puntuación para cada producto
+    # Calcular puntuación de coincidencia
     def calcular_puntuacion(row):
         puntuacion = 0
         
-        # Coincidencia exacta
-        if row['producto_norm'] == texto_norm:
+        # Coincidencia exacta con producto
+        if row['producto_norm'] == busqueda_norm:
             puntuacion += 100
-        if row['principio_activo_norm'] == texto_norm:
+        # Coincidencia exacta con principio activo
+        if row['principio_activo_norm'] == busqueda_norm:
             puntuacion += 90
-            
-        # Coincidencia al inicio del nombre
-        if row['producto_norm'].startswith(texto_norm):
+        
+        # Producto contiene la búsqueda
+        if busqueda_norm in row['producto_norm']:
             puntuacion += 80
-        if row['principio_activo_norm'].startswith(texto_norm):
+        # Principio activo contiene la búsqueda
+        if busqueda_norm in row['principio_activo_norm']:
             puntuacion += 70
-        
-        # Coincidencia parcial
-        if texto_norm in row['producto_norm']:
-            puntuacion += 60
-        if texto_norm in row['principio_activo_norm']:
-            puntuacion += 50
-        
-        # Coincidencia por tokens (palabras)
-        tokens_busqueda = texto_norm.split()
-        tokens_producto = row['producto_norm'].split()
-        tokens_principio = row['principio_activo_norm'].split()
-        
-        for token in tokens_busqueda:
-            if token in tokens_producto:
-                puntuacion += 20
-            if token in tokens_principio:
+            
+        # Buscar tokens individuales
+        for token in busqueda_tokens:
+            if token in row['producto_norm'].split():
                 puntuacion += 15
+            if token in row['principio_activo_norm'].split():
+                puntuacion += 10
+            if token in row['producto_norm']:
+                puntuacion += 5
+            if token in row['principio_activo_norm']:
+                puntuacion += 5
         
         return puntuacion
     
-    # Aplicar puntuación
+    # Aplicar puntuación a cada fila
     df['puntuacion'] = df.apply(calcular_puntuacion, axis=1)
     
-    # Filtrar resultados con puntuación > 0 y ordenar
-    resultados = df[df['puntuacion'] > 0].sort_values('puntuacion', ascending=False)
+    # Filtrar productos con puntuación mayor a 0 y ordenar por puntuación
+    resultado = df[df['puntuacion'] > 0].sort_values('puntuacion', ascending=False)
     
     # Limpiar columnas temporales
     df.drop(['producto_norm', 'principio_activo_norm', 'puntuacion'], axis=1, inplace=True)
     
-    if resultados.empty:
+    return resultado if not resultado.empty else None
+
+# Función para obtener sugerencias en tiempo real
+def obtener_sugerencias(df, texto, max_sugerencias=5):
+    if not texto or len(texto) < 2:
         return []
     
-    # Formato: sólo el nombre del producto (como en Google)
-    sugerencias = []
-    for _, row in resultados.head(max_sugerencias).iterrows():
-        sugerencias.append({
-            "id": int(row['id']),
-            "texto": row['producto'],
-            "tipo": row['tipo']
-        })
+    resultados = buscar_productos_flexible(df, texto)
+    
+    if resultados is None:
+        return []
+    
+    # Obtener las sugerencias (top N)
+    sugerencias = resultados.head(max_sugerencias)[['id', 'tipo', 'producto', 'principio_activo']]
     
     return sugerencias
 
-# Aplicar tema oscuro personalizado
-def set_page_style():
-    # Aplicar estilos globales a la página
-    st.markdown("""
-    <style>
-        /* Estilo para tema oscuro */
-        .main {
-            background-color: #1E1E1E;
-            color: #E0E0E0;
-        }
-        
-        /* Estilo para los contenedores */
-        .block-container {
-            padding-top: 2rem;
-        }
-        
-        /* Títulos */
-        h1, h2, h3, h4, h5, h6 {
-            color: #FF8C00;
-        }
-        
-        /* Campos de entrada */
-        div[data-baseweb="input"] input {
-            background-color: #333333;
-            color: white;
-            border: 1px solid #555555;
-            border-radius: 5px;
-            padding: 10px 12px;
-            font-size: 16px;
-        }
-        
-        div[data-baseweb="input"] input:focus {
-            border-color: #FF8C00;
-            box-shadow: 0 0 0 1px #FF8C00;
-        }
-        
-        /* Estilo para pestañas */
-        .stTabs [data-baseweb="tab-list"] {
-            gap: 2px;
-            background-color: #2D2D2D;
-            border-radius: 8px;
-            padding: 5px;
-        }
-        
-        .stTabs [data-baseweb="tab"] {
-            border-radius: 4px;
-            padding: 10px 16px;
-            color: #E0E0E0;
-        }
-        
-        .stTabs [aria-selected="true"] {
-            background-color: #FF8C00;
-            color: white;
-        }
-        
-        /* Botones */
-        .stButton button {
-            border-radius: 5px;
-            background-color: #FF8C00;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-weight: 500;
-        }
-        
-        .stButton button:hover {
-            background-color: #FF6A00;
-        }
-        
-        /* Tablas */
-        .dataframe-container {
-            border-radius: 8px;
-            border: 1px solid #555555;
-            overflow: hidden;
-        }
-        
-        .dataframe {
-            width: 100%;
-            background-color: #2D2D2D;
-            color: #E0E0E0;
-        }
-        
-        .dataframe thead th {
-            background-color: #3D3D3D;
-            color: #FF8C00;
-            font-weight: 500;
-            padding: 10px;
-            text-align: left;
-        }
-        
-        .dataframe tbody tr:nth-child(odd) {
-            background-color: #333333;
-        }
-        
-        .dataframe td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #444444;
-        }
-        
-        /* Ocultar cabecera y pie de Streamlit */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        
-        /* Dropdown container */
-        .search-container {
-            position: relative;
-            width: 100%;
-        }
-        
-        /* Estilos para el dropdown de autocompletado */
-        .autocomplete-items {
-            position: absolute;
-            border-radius: 0 0 8px 8px;
-            z-index: 99;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: #333;
-            border: 1px solid #555;
-            border-top: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .autocomplete-item {
-            padding: 12px 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.2s;
-            border-bottom: 1px solid #444;
-        }
-        
-        .autocomplete-item:last-child {
-            border-bottom: none;
-            border-radius: 0 0 8px 8px;
-        }
-        
-        .autocomplete-item:hover {
-            background-color: #444;
-        }
-        
-        .autocomplete-item-icon {
-            margin-right: 10px;
-            color: #999;
-            width: 20px;
-        }
-        
-        .autocomplete-item-text {
-            flex-grow: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #E0E0E0;
-        }
-        
-        .autocomplete-item-type {
-            color: #999;
-            font-size: 12px;
-            margin-left: 10px;
-            white-space: nowrap;
-        }
-
-        /* Input de búsqueda personalizado */
-        .search-input {
-            width: 100%;
-            background-color: #333;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 8px;
-            padding: 12px 15px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .search-input:focus {
-            border-color: #FF8C00;
-            box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3);
-        }
-
-        /* Contenedor principal */
-        .custom-container {
-            background-color: #262626;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Info del producto */
-        .product-info {
-            background-color: #333;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            border-left: 4px solid #FF8C00;
-        }
-
-        .product-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #FF8C00;
-            margin-bottom: 15px;
-        }
-
-        .product-detail {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #444;
-            padding: 8px 0;
-        }
-
-        .product-detail-label {
-            font-weight: 500;
-            color: #999;
-        }
-
-        .product-detail-value {
-            color: white;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-# Inyectar JavaScript para el autocompletado
-def inject_autocomplete_js(texto_busqueda):
-    js_code = f"""
-    <script>
-    // Función para actualizar el valor de búsqueda en el estado de Streamlit
-    function updateSearchValue(value) {{
-        // Establecer el valor en el campo de texto
-        const inputElement = document.querySelector('input[aria-label="Buscar producto o principio activo..."]');
-        if (inputElement) {{
-            // Create a new input event
-            const inputEvent = new Event('input', {{ bubbles: true }});
-            
-            // Set the value and dispatch the event
-            inputElement.value = value;
-            inputElement.dispatchEvent(inputEvent);
-            
-            // Focus on the input after selection
-            inputElement.focus();
-        }}
-    }}
-    
-    // Capturar clics en los elementos de autocompletado
-    document.addEventListener('click', function(e) {{
-        const item = e.target.closest('.autocomplete-item');
-        if (item) {{
-            const productId = item.getAttribute('data-id');
-            const productText = item.getAttribute('data-text');
-            
-            // Actualizar el valor en el campo de búsqueda
-            updateSearchValue(productText);
-            
-            // Enviar mensaje a Streamlit para procesar la selección
-            const productData = {{
-                id: Number(productId),
-                text: productText
-            }};
-            
-            window.parent.postMessage({{
-                type: "streamlit:setComponentValue",
-                value: productData
-            }}, "*");
-        }}
-    }});
-    
-    // Cerrar el dropdown si se hace clic fuera
-    document.addEventListener('click', function(e) {{
-        if (!e.target.closest('.search-container') && !e.target.closest('.autocomplete-items')) {{
-            const dropdown = document.querySelector('.autocomplete-items');
-            if (dropdown) {{
-                dropdown.style.display = 'none';
-            }}
-        }}
-    }});
-
-    // Posicionamiento inicial de la caja de autocompletado
-    document.addEventListener('DOMContentLoaded', function() {{
-        const inputElement = document.querySelector('input[aria-label="Buscar producto o principio activo..."]');
-        const searchContainer = document.querySelector('.search-container');
-        
-        if (inputElement && searchContainer) {{
-            // Obtener la posición del input
-            const inputRect = inputElement.getBoundingClientRect();
-            
-            // Actualizar posición del contenedor
-            searchContainer.style.position = 'relative';
-            searchContainer.style.width = inputRect.width + 'px';
-        }}
-    }});
-    </script>
-    """
-    return js_code
-
 # Función principal
 def main():
-    # Configurar estilo de página
-    set_page_style()
-    
     # Cargar datos
     df = load_initial_data()
     
     # Título de la aplicación
-    st.markdown("<h1 style='text-align: center; color: #FF8C00;'>Sistema de Gestión de Agroquímicos</h1>", unsafe_allow_html=True)
-    st.markdown(f"<p style='text-align: center; color: #AAA; margin-bottom: 30px;'>Fecha de actualización: 05/05/2025</p>", unsafe_allow_html=True)
+    st.title("Sistema de Gestión de Agroquímicos")
+    st.write("Fecha de actualización: 05/05/2025")
     
     # Crear pestañas
     tab1, tab2, tab3, tab4 = st.tabs(["Consulta de Precios", "Lista de Productos", "Agregar Producto", "Por Categoría"])
     
     # Pestaña 1: Consulta de Precios
     with tab1:
-        st.markdown("<h2>Consulta de Precios</h2>", unsafe_allow_html=True)
+        st.header("Consulta de Precios")
         
-        # Inicializar o actualizar variables de estado
-        if 'busqueda' not in st.session_state:
-            st.session_state.busqueda = ""
-        if 'producto_seleccionado' not in st.session_state:
-            st.session_state.producto_seleccionado = None
+        # Campo de búsqueda con sugerencias en tiempo real
+        busqueda = st.text_input("Buscar producto o principio activo...", key="busqueda")
         
-        # Crear el campo de búsqueda personalizado
-        st.markdown("<div class='search-container'>", unsafe_allow_html=True)
-        
-        # Input de búsqueda
-        texto_busqueda = st.text_input("Buscar producto o principio activo...", value=st.session_state.busqueda)
-        
-        # Obtener sugerencias basadas en el texto
-        sugerencias = obtener_sugerencias(df, texto_busqueda)
-        
-        # Mostrar dropdown de sugerencias si hay texto y resultados
-        if texto_busqueda and sugerencias:
-            # Crear HTML para el dropdown de sugerencias
-            suggestions_html = """
-            <div class="autocomplete-items">
-            """
+        # Mostrar sugerencias en tiempo real
+        if busqueda:
+            sugerencias = obtener_sugerencias(df, busqueda)
             
-            for sugerencia in sugerencias:
-                suggestions_html += f"""
-                <div class="autocomplete-item" data-id="{sugerencia['id']}" data-text="{sugerencia['texto']}">
-                    <div class="autocomplete-item-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="autocomplete-item-text">{sugerencia['texto']}</div>
-                    <div class="autocomplete-item-type">{sugerencia['tipo']}</div>
-                </div>
-                """
-            
-            suggestions_html += "</div>"
-            
-            # Renderizar el dropdown
-            st.markdown(suggestions_html, unsafe_allow_html=True)
+            if not sugerencias.empty:
+                st.write("Sugerencias:")
+                for i, sugerencia in sugerencias.iterrows():
+                    if st.button(f"{sugerencia['producto']} ({sugerencia['tipo']})", key=f"sug_{sugerencia['id']}"):
+                        # Al hacer clic en una sugerencia, actualizar la búsqueda y realizar búsqueda
+                        st.session_state.producto_seleccionado = sugerencia['id']
+                        st.experimental_rerun()
+                
+                # Mostrar línea separadora
+                st.markdown("---")
         
-        # Cerrar el contenedor de búsqueda
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-        # Inyectar JavaScript para la funcionalidad del autocompletado
-        st.markdown(inject_autocomplete_js(texto_busqueda), unsafe_allow_html=True)
-        
-        # Componente para recibir la selección de sugerencias
-        component_value = components.html(
-            """
-            <div id="suggestion-receiver" style="display:none;"></div>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-            """, 
-            height=0
-        )
-        
-        # Procesar la selección
-        if component_value:
-            if isinstance(component_value, dict) and 'id' in component_value:
-                st.session_state.producto_seleccionado = component_value['id']
-                st.session_state.busqueda = component_value['text']
-                st.experimental_rerun()
-        
-        # Mostrar el producto seleccionado
-        if st.session_state.producto_seleccionado:
+        # Procesar selección de producto 
+        if 'producto_seleccionado' in st.session_state:
             producto = df[df['id'] == st.session_state.producto_seleccionado].iloc[0]
             
-            # Mostrar información del producto con estilo mejorado
-            st.markdown('<div class="product-info">', unsafe_allow_html=True)
-            st.markdown(f'<div class="product-title">{producto["producto"]}</div>', unsafe_allow_html=True)
+            # Mostrar información del producto seleccionado
+            st.success(f"Producto seleccionado: {producto['producto']}")
             
-            # Tipo
-            st.markdown(
-                f'<div class="product-detail"><span class="product-detail-label">Tipo:</span><span class="product-detail-value">{producto["tipo"]}</span></div>',
-                unsafe_allow_html=True
-            )
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write(f"**Tipo:** {producto['tipo']}")
+                st.write(f"**Principio activo:** {producto['principio_activo']}")
             
-            # Principio activo
-            st.markdown(
-                f'<div class="product-detail"><span class="product-detail-label">Principio activo:</span><span class="product-detail-value">{producto["principio_activo"]}</span></div>',
-                unsafe_allow_html=True
-            )
-            
-            # Precio
-            precio = "s/d" if pd.isna(producto['precio']) else f"{producto['precio']:.2f}"
-            st.markdown(
-                f'<div class="product-detail"><span class="product-detail-label">Precio:</span><span class="product-detail-value">{precio} {producto["unidad"]}</span></div>',
-                unsafe_allow_html=True
-            )
-            
-            # Fecha
-            st.markdown(
-                f'<div class="product-detail"><span class="product-detail-label">Última actualización:</span><span class="product-detail-value">{producto["fecha"]}</span></div>',
-                unsafe_allow_html=True
-            )
-            
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Si hay búsqueda pero no hay producto seleccionado, mostrar resultados completos
-        elif texto_busqueda:
-            # Buscar todos los productos que coincidan con la búsqueda
-            producto_norm = normalizar_texto(texto_busqueda)
-            resultados = df[
-                df['producto'].apply(lambda x: normalizar_texto(x)).str.contains(producto_norm) |
-                df['principio_activo'].apply(lambda x: normalizar_texto(str(x)) if pd.notna(x) else "").str.contains(producto_norm)
-            ]
-            
-            if not resultados.empty:
-                st.markdown("<h3 style='margin-top: 30px;'>Resultados de la búsqueda</h3>", unsafe_allow_html=True)
+            with col2:
+                precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
+                unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
+                st.write(f"**Precio:** {precio} {unidad}")
+                st.write(f"**Última actualización:** {producto['fecha']}")
                 
-                # Mostrar tabla con resultados
-                st.dataframe(
-                    resultados[['tipo', 'producto', 'principio_activo', 'precio', 'unidad']],
-                    column_config={
-                        "tipo": "Tipo",
-                        "producto": "Producto",
-                        "principio_activo": "Principio Activo",
-                        "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
-                        "unidad": "Unidad"
-                    },
-                    use_container_width=True,
-                    hide_index=True
-                )
+            st.button("Borrar selección", on_click=lambda: st.session_state.pop('producto_seleccionado'))
+                
+        elif busqueda:
+            # Si no hay producto seleccionado pero hay una búsqueda, realizar búsqueda
+            resultado = buscar_productos_flexible(df, busqueda)
+            
+            if resultado is not None and not resultado.empty:
+                # Mostrar el primer resultado
+                producto = resultado.iloc[0]
+                
+                # Mostrar información del producto encontrado
+                st.write(f"**Mejor coincidencia:** {producto['producto']}")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write(f"**Tipo:** {producto['tipo']}")
+                    st.write(f"**Principio activo:** {producto['principio_activo']}")
+                
+                with col2:
+                    precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
+                    unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
+                    st.write(f"**Precio:** {precio} {unidad}")
+                    st.write(f"**Última actualización:** {producto['fecha']}")
+                
+                # Si hay más resultados, mostrarlos
+                if len(resultado) > 1:
+                    st.write("Otros productos coincidentes:")
+                    st.dataframe(
+                        resultado[1:].drop(['id', 'fecha'], axis=1), 
+                        column_config={
+                            "tipo": "Tipo",
+                            "producto": "Producto",
+                            "principio_activo": "Principio Activo",
+                            "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
+                            "unidad": "Unidad"
+                        },
+                        hide_index=True
+                    )
+            elif busqueda.strip():  # Solo mostrar error si hay texto en la búsqueda
+                st.warning("Producto no encontrado. Intente con otro término de búsqueda.")
     
     # Pestaña 2: Lista de Productos
     with tab2:
-        st.markdown("<h2>Lista de Productos</h2>", unsafe_allow_html=True)
+        st.header("Lista de Productos")
         
         # Selector de tipo
         tipo_filtro = st.selectbox(
@@ -784,7 +438,7 @@ def main():
     
     # Pestaña 3: Agregar Producto
     with tab3:
-        st.markdown("<h2>Agregar Nuevo Producto</h2>", unsafe_allow_html=True)
+        st.header("Agregar Nuevo Producto")
         
         # Formulario para agregar nuevo producto
         with st.form("nuevo_producto_form"):
@@ -830,7 +484,7 @@ def main():
     
     # Pestaña 4: Por Categoría
     with tab4:
-        st.markdown("<h2>Productos por Categoría</h2>", unsafe_allow_html=True)
+        st.header("Productos por Categoría")
         
         # Gráfico de distribución por tipo usando componentes nativos de Streamlit
         st.subheader("Distribución de productos por categoría")
@@ -843,7 +497,6 @@ def main():
         # Mostrar productos por categoría en tabs
         categoria_tabs = st.tabs(sorted(df['tipo'].unique().tolist()))
         
-        # Pestaña 4: Por Categoría (continuación)
         for i, tipo in enumerate(sorted(df['tipo'].unique())):
             with categoria_tabs[i]:
                 productos_tipo = df[df['tipo'] == tipo]
@@ -862,7 +515,7 @@ def main():
                 
                 # Análisis de precios para esta categoría
                 if not productos_tipo['precio'].isna().all():
-                    st.markdown(f"<h3>Análisis de precios: {tipo}</h3>", unsafe_allow_html=True)
+                    st.subheader(f"Análisis de precios: {tipo}")
                     
                     col1, col2 = st.columns(2)
                     
@@ -877,28 +530,21 @@ def main():
                     
                     with col2:
                         # Mostrar estadísticas en lugar de gráfico
-                        st.markdown("<div style='background-color: #333; padding: 15px; border-radius: 8px;'>", unsafe_allow_html=True)
-                        st.markdown("<p style='font-weight: bold; color: #FF8C00;'>Estadísticas de precios:</p>", unsafe_allow_html=True)
-                        st.markdown(f"<p>• Mediana: <span style='color: white;'>{productos_tipo['precio'].median():.2f}</span></p>", unsafe_allow_html=True)
-                        st.markdown(f"<p>• Desviación estándar: <span style='color: white;'>{productos_tipo['precio'].std():.2f}</span></p>", unsafe_allow_html=True)
-                        st.markdown(f"<p>• Cantidad de productos: <span style='color: white;'>{len(productos_tipo)}</span></p>", unsafe_allow_html=True)
-                        st.markdown("</div>", unsafe_allow_html=True)
+                        st.write("**Estadísticas de precios:**")
+                        st.write(f"- Mediana: {productos_tipo['precio'].median():.2f}")
+                        st.write(f"- Desviación estándar: {productos_tipo['precio'].std():.2f}")
+                        st.write(f"- Cantidad de productos: {len(productos_tipo)}")
 
     # Pie de página
-    st.markdown("<hr style='margin-top: 30px; border-color: #444;'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='color: #FF8C00;'>Instrucciones de uso:</h3>", unsafe_allow_html=True)
+    st.divider()
+    st.write("### Instrucciones de uso:")
     st.markdown("""
-    <div style='background-color: #333; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
-        <ul style='margin-left: 20px;'>
-            <li>En la pestaña <strong style='color: #FF8C00;'>Consulta de Precios</strong> puedes buscar rápidamente los precios de cualquier producto. 
-                Empieza a escribir y aparecerán sugerencias automáticamente.</li>
-            <li>En <strong style='color: #FF8C00;'>Lista de Productos</strong> puedes ver todos los productos y filtrarlos por tipo.</li>
-            <li>Usa <strong style='color: #FF8C00;'>Agregar Producto</strong> para incluir nuevos productos a tu lista.</li>
-            <li>En <strong style='color: #FF8C00;'>Por Categoría</strong> puedes ver los productos organizados por su tipo y análisis de precios.</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #999; font-size: 12px;'>Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025</p>", unsafe_allow_html=True)
+    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. Empieza a escribir para ver sugerencias.
+    - En **Lista de Productos** puedes ver todos los productos y filtrarlos por tipo.
+    - Usa **Agregar Producto** para incluir nuevos productos a tu lista.
+    - En **Por Categoría** puedes ver los productos organizados por su tipo y análisis de precios.
+    """)
+    st.caption("Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025")
 
 if __name__ == "__main__":
     main()
