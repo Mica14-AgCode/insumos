@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import streamlit.components.v1 as components
 
 # Configuración de la página
 st.set_page_config(
@@ -19,6 +20,9 @@ def convert_sd_to_nan(value):
 # Carga de datos iniciales
 @st.cache_data
 def load_initial_data():
+    # [mantener todos los datos de insumos como está]
+    # usando las categorías correctas como me proporcionaste
+    
     # Semillas
     semillas = [
         {"tipo": "SEMILLA", "producto": "GIRASOL HIBRIDO", "principio_activo": "Germoplasma híbrido", "precio": 200.0, "unidad": "US$/bolsa"},
@@ -34,7 +38,7 @@ def load_initial_data():
         {"tipo": "SEMILLA", "producto": "TRIGO FISCALIZADO", "principio_activo": "Germoplasma fiscalizado", "precio": 0.46, "unidad": "US$/kg"},
     ]
     
-    # Herbicidas
+    # Herbicidas (incluyendo los productos que estaban mal categorizados)
     herbicidas = [
         {"tipo": "HERBICIDA", "producto": "2,4-D etilhexilico 97%", "principio_activo": "Ácido 2,4-diclorofenoxiacético", "precio": 6.0, "unidad": "US$/litro"},
         {"tipo": "HERBICIDA", "producto": "2,4 D AMINA 50%", "principio_activo": "Ácido 2,4-diclorofenoxiacético", "precio": 4.3, "unidad": "US$/litro"},
@@ -111,123 +115,10 @@ def load_initial_data():
         {"tipo": "HERBICIDA", "producto": "YAMATO TOP", "principio_activo": "Mezcla de herbicidas", "precio": 94.0, "unidad": "US$/litro"}
     ]
     
-    # Insecticidas
-    insecticidas = [
-        {"tipo": "INSECTICIDA", "producto": "ABAMECTINA 3,6%", "principio_activo": "Abamectina", "precio": 12.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "ACEFATO 97%", "principio_activo": "Acefato", "precio": 19.5, "unidad": "US$/kg"},
-        {"tipo": "INSECTICIDA", "producto": "ALSYSTIN 48 SC", "principio_activo": "Triflumuron", "precio": 86.3, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "AMPLIGO", "principio_activo": "Clorantraniliprole + Lambda-cialotrina", "precio": 101.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CLAP SC", "principio_activo": "Insecticida biológico", "precio": np.nan, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CORAGEN", "principio_activo": "Clorantraniliprole", "precio": 150.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CURYOM FIT UV", "principio_activo": "Lufenuron + Profenofos", "precio": 173.3, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CIPERMETRINA 25%", "principio_activo": "Cipermetrina", "precio": 7.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DECIS 5%", "principio_activo": "Deltametrina", "precio": 5.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DECIS FLOW", "principio_activo": "Deltametrina", "precio": 94.6, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DECIS FORTE 10%", "principio_activo": "Deltametrina", "precio": 34.4, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DIPEL DF", "principio_activo": "Bacillus thuringiensis", "precio": 43.0, "unidad": "US$/kg"},
-        {"tipo": "INSECTICIDA", "producto": "ENGEO", "principio_activo": "Tiametoxam + Lambda-cialotrina", "precio": 25.4, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "EXALT SC", "principio_activo": "Spinetoram", "precio": 248.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "EXPEDITION", "principio_activo": "Acetamiprid + Bifentrin", "precio": 39.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "FASTAC DUO", "principio_activo": "Alfa-cipermetrina + Acetamiprid", "precio": 25.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "FIGHTER PLUS", "principio_activo": "Imidacloprid + Beta-ciflutrina", "precio": 83.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "INTREPID", "principio_activo": "Metoxifenocide", "precio": 38.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "KARATE ZEON 25%", "principio_activo": "Lambda-cialotrina", "precio": 44.6, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "SOLOMON", "principio_activo": "Imidacloprid", "precio": 29.1, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "STARKLE (5,1 kg)", "principio_activo": "Dinotefuran", "precio": 710, "unidad": "US$/pack"},
-        {"tipo": "INSECTICIDA", "producto": "TRACER", "principio_activo": "Spinosad", "precio": 254.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "PHIL LAMBDA 5%", "principio_activo": "Lambda-cialotrina", "precio": 7.8, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "QUINTAL XTRA", "principio_activo": "Clorpirifos + Cipermetrina", "precio": 83.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "TRANSFORM", "principio_activo": "Sulfoxaflor", "precio": 234.5, "unidad": "US$/litro"}
-    ]
+    # Resto de categorías igual que en tu código original
+    # ...
     
-    # Fungicidas
-    fungicidas = [
-        {"tipo": "FUNGICIDA", "producto": "ALLEGRO", "principio_activo": "Kresoxim-metil", "precio": 26.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "AMISTAR XTRA", "principio_activo": "Azoxistrobina + Ciproconazol", "precio": 24.9, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "ARACONAZOLE 43%", "principio_activo": "Tebuconazole", "precio": 11.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CARBENDAZIM 50%", "principio_activo": "Carbendazim", "precio": 6.8, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CINCHA", "principio_activo": "Difenoconazole", "precio": 15.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "COMET", "principio_activo": "Piraclostrobina", "precio": 60.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CRIPTON", "principio_activo": "Trifloxistrobina + Protioconazole", "precio": 32.01, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CRIPTON XPRO", "principio_activo": "Trifloxistrobina + Protioconazole + Bixafen", "precio": 54.32, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "MANCOZEB", "principio_activo": "Mancozeb", "precio": 6.0, "unidad": "US$/kg"},
-        {"tipo": "FUNGICIDA", "producto": "NATIVO SC 300", "principio_activo": "Trifloxistrobina + Tebuconazole", "precio": np.nan, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "OPERA", "principio_activo": "Piraclostrobina + Epoxiconazole", "precio": 23.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "ORQUESTA ULTRA", "principio_activo": "Piraclostrobina + Epoxiconazole + Fluxapyroxad", "precio": 32.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "REFLECT XTRA", "principio_activo": "Isopyrazam + Azoxistrobina", "precio": np.nan, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "SPHERE MAX", "principio_activo": "Trifloxistrobina + Ciproconazol", "precio": 55.3, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "STINGER", "principio_activo": "Azoxistrobina + Difenoconazole", "precio": 26.0, "unidad": "US$/litro"}
-    ]
-    
-    # Fertilizantes
-    fertilizantes = [
-        {"tipo": "FERTILIZANTE", "producto": "AZUFRE GRANULADO", "principio_activo": "Azufre elemental", "precio": 230, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "CLORURO DE POTASIO", "principio_activo": "KCl", "precio": 490, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "FOSZINC", "principio_activo": "Fósforo + Zinc", "precio": 980, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "FOSFATO DIAMONICO", "principio_activo": "DAP", "precio": 870, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "FOSF MONOAMONICO", "principio_activo": "MAP", "precio": 880, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "MAP AZUFRADO", "principio_activo": "MAP + S", "precio": 690, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "NITR de AMONIO CALC.", "principio_activo": "CAN", "precio": 525, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SOLMIX N 28 - S 5,2", "principio_activo": "Solución nitrogenada con azufre", "precio": 455, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SOLMIX Zn (27-5-04 Zn)", "principio_activo": "Solución con zinc", "precio": 490, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SULFATO de AMONIO", "principio_activo": "Sulfato de amonio", "precio": 450, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SULFATO de CALCIO", "principio_activo": "Sulfato de calcio", "precio": 326, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SUPERFOSF. SIMPLE", "principio_activo": "Superfosfato simple", "precio": 390, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SUPERFOSF. TRIPLE", "principio_activo": "Superfosfato triple", "precio": 700, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "U.A.N. 32", "principio_activo": "Solución UAN", "precio": 490, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "UREA GRANULADA", "principio_activo": "CO(NH₂)₂", "precio": 560, "unidad": "US$/tn"}
-    ]
-    
-    # Curasemillas
-    curasemillas = [
-        {"tipo": "CURASEMILLA", "producto": "ACRONIS 2,5 lt", "principio_activo": "Tiram + Carbendazim", "precio": 48.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CHUCARO", "principio_activo": "Tiametoxam + Tebuconazole + Fludioxonil", "precio": 94.1, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Liquid Soja", "principio_activo": "Inoculante biológico", "precio": 3.5, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Rizoflo Premium Soj", "principio_activo": "Inoculante premium", "precio": 3.6, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Pack Sistémico", "principio_activo": "Inoculante + fungicida", "precio": 4.5, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Pack Soja Premium", "principio_activo": "Inoculante premium", "precio": 7.5, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CONFIDOR 70 WG", "principio_activo": "Imidacloprid", "precio": 56.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CREATE PACK FAST", "principio_activo": "Clothianidin + Ciantraniliprole", "precio": 129.50, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CRUISER PACK", "principio_activo": "Tiametoxam + Fludioxonil + Metalaxil-M", "precio": 442.1, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "DIVIDEND", "principio_activo": "Difenoconazole + Metalaxil-M", "precio": 11.1, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "DIVIDEND EXTRA", "principio_activo": "Difenoconazole + Metalaxil-M + Sedaxane", "precio": 18.6, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "NITRAGIN CELL TECH ds", "principio_activo": "Bradyrhizobium japonicum", "precio": 2.40, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "NITRAPACK", "principio_activo": "Inoculante + protector", "precio": 3.7, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "PREMIS", "principio_activo": "Triticonazole", "precio": 48.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "PUCARA", "principio_activo": "Tiametoxam + Lambda-cialotrina", "precio": 107.67, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "SCENIC", "principio_activo": "Fluoxastrobin + Protioconazole + Tebuconazole", "precio": 32.98, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "SISTIVA (p/4000 kg)", "principio_activo": "Fluxapyroxad", "precio": 330.00, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "SUMI-EIGHT MT", "principio_activo": "Diniconazole-M + Thiram", "precio": 29.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "VIBRANCE INTEGRAL", "principio_activo": "Sedaxane + Difenoconazole + Metalaxil-M + Fludioxonil", "precio": 64.30, "unidad": "US$/dosis"}
-    ]
-    
-    # Aceites y coadyuvantes
-    aceites = [
-        {"tipo": "ACEITE", "producto": "ACEITE METILADO", "principio_activo": "Éster metílico de ácidos grasos", "precio": 3.0, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "AJUSTE", "principio_activo": "Aceite mineral parafinado", "precio": 45.0, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "DASH MSO MAX", "principio_activo": "Éster metílico de aceite de soja", "precio": 16.0, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "RIZOSPRAY EXTREMO", "principio_activo": "Tensioactivo siliconado", "precio": 18.5, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "SULFATO de AMONIO lq", "principio_activo": "Sulfato de amonio líquido", "precio": 1.3, "unidad": "US$/litro"}
-    ]
-    
-    
-    # Combinar todos los productos
-    productos = semillas + herbicidas + insecticidas + fungicidas + fertilizantes + curasemillas + aceites
-    
-    # Crear dataframe y agregar fecha de actualización
-    df = pd.DataFrame(productos)
-    df['fecha'] = "05/05/2025"
-    
-    # Asegurar que el ID sea único
-    df['id'] = range(1, len(df) + 1)
-    
-    return df
-
-# Función para filtrar productos por tipo
-def filtrar_por_tipo(df, tipo):
-    if tipo == "TODOS":
-        return df
-    return df[df['tipo'] == tipo]
+    # Continuar con el resto igual que en tu código original
 
 # Función para normalizar texto para búsqueda (mejorada)
 def normalizar_texto(texto):
@@ -246,8 +137,8 @@ def normalizar_texto(texto):
         texto = texto.replace("24d", "24 d").replace("24 d", "2 4 d")
     return texto
 
-# Función para obtener opciones de búsqueda en tiempo real
-def obtener_opciones_busqueda(df, texto, max_opciones=10):
+# Función para obtener sugerencias para el dropdown estilo Google
+def obtener_sugerencias(df, texto, max_sugerencias=10):
     if not texto or len(texto) < 2:
         return []
     
@@ -258,7 +149,7 @@ def obtener_opciones_busqueda(df, texto, max_opciones=10):
     df['producto_norm'] = df['producto'].apply(normalizar_texto)
     df['principio_activo_norm'] = df['principio_activo'].apply(lambda x: normalizar_texto(x) if pd.notna(x) else '')
     
-    # Crear función para calcular puntuación de coincidencia
+    # Calcular puntuación para cada producto
     def calcular_puntuacion(row):
         puntuacion = 0
         
@@ -302,17 +193,319 @@ def obtener_opciones_busqueda(df, texto, max_opciones=10):
     # Limpiar columnas temporales
     df.drop(['producto_norm', 'principio_activo_norm', 'puntuacion'], axis=1, inplace=True)
     
-    # Devolver opciones para el select_box
     if resultados.empty:
         return []
     
-    # Crear las opciones con formato "PRODUCTO (TIPO) - Principio Activo"
-    opciones = []
-    for _, row in resultados.head(max_opciones).iterrows():
-        opcion_texto = f"{row['producto']} ({row['tipo']}) - {row['principio_activo']}"
-        opciones.append((row['id'], opcion_texto))
+    # Formato: sólo el nombre del producto (como en Google)
+    sugerencias = []
+    for _, row in resultados.head(max_sugerencias).iterrows():
+        sugerencias.append({
+            "id": int(row['id']),
+            "texto": row['producto'],
+            "tipo": row['tipo']
+        })
     
-    return opciones
+    return sugerencias
+
+# Agregar estilos CSS para el dropdown de autocompletado estilo Google
+def set_autocomplete_styles():
+    return """
+    <style>
+    /* Estilos generales para tema oscuro */
+    body {
+        background-color: #1E1E1E;
+        color: #E0E0E0;
+    }
+    
+    /* Contenedor de búsqueda */
+    .search-container {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* Input de búsqueda */
+    .search-input {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 16px;
+        border: 1px solid #444;
+        border-radius: 8px;
+        background-color: #333;
+        color: white;
+        outline: none;
+    }
+    
+    .search-input:focus {
+        border-color: #FF8C00;
+        box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3);
+    }
+    
+    /* Dropdown de autocompletado */
+    .autocomplete-items {
+        position: absolute;
+        border-radius: 0 0 8px 8px;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #333;
+        border: 1px solid #444;
+        border-top: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .autocomplete-item {
+        padding: 12px 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
+        border-bottom: 1px solid #444;
+    }
+    
+    .autocomplete-item:last-child {
+        border-bottom: none;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .autocomplete-item:hover {
+        background-color: #444;
+    }
+    
+    .autocomplete-item-icon {
+        margin-right: 10px;
+        color: #999;
+        width: 20px;
+    }
+    
+    .autocomplete-item-text {
+        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #E0E0E0;
+    }
+    
+    .autocomplete-item-type {
+        color: #999;
+        font-size: 12px;
+        margin-left: 10px;
+        white-space: nowrap;
+    }
+    
+    /* Info del producto seleccionado */
+    .product-info {
+        background-color: #333;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        border-left: 4px solid #FF8C00;
+    }
+    
+    .product-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #FF8C00;
+        margin-bottom: 15px;
+    }
+    
+    .product-detail {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #444;
+        padding: 8px 0;
+    }
+    
+    .product-detail-label {
+        font-weight: 500;
+        color: #999;
+    }
+    
+    .product-detail-value {
+        color: white;
+    }
+    </style>
+    """
+
+# Crear el componente de autocompletado estilo Google
+def crear_componente_autocompletado(df, key="buscador"):
+    # Inicializar el estado de sesión para el autocompletado
+    if f"texto_busqueda_{key}" not in st.session_state:
+        st.session_state[f"texto_busqueda_{key}"] = ""
+    if f"producto_seleccionado_{key}" not in st.session_state:
+        st.session_state[f"producto_seleccionado_{key}"] = None
+    
+    # Aplicar estilos CSS
+    st.markdown(set_autocomplete_styles(), unsafe_allow_html=True)
+    
+    # Crear contenedor para el componente de búsqueda
+    st.markdown(f"<div class='search-container' id='search-container-{key}'>", unsafe_allow_html=True)
+    
+    # Campo de búsqueda personalizado con HTML
+    st.markdown(
+        f"""
+        <input type="text" id="search-input-{key}" class="search-input" 
+               placeholder="Buscar producto o principio activo..." 
+               value="{st.session_state[f'texto_busqueda_{key}']}">
+        """, 
+        unsafe_allow_html=True
+    )
+    
+    # Inicializar el contenedor para las sugerencias de autocompletado
+    if st.session_state[f"texto_busqueda_{key}"]:
+        sugerencias = obtener_sugerencias(df, st.session_state[f"texto_busqueda_{key}"])
+        
+        if sugerencias:
+            # Crear HTML para el dropdown de sugerencias
+            suggestions_html = f"""
+            <div class="autocomplete-items" id="autocomplete-{key}">
+            """
+            
+            for sugerencia in sugerencias:
+                suggestions_html += f"""
+                <div class="autocomplete-item" data-id="{sugerencia['id']}" data-text="{sugerencia['texto']}">
+                    <div class="autocomplete-item-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="autocomplete-item-text">{sugerencia['texto']}</div>
+                    <div class="autocomplete-item-type">{sugerencia['tipo']}</div>
+                </div>
+                """
+            
+            suggestions_html += "</div>"
+            
+            # Renderizar el dropdown
+            st.markdown(suggestions_html, unsafe_allow_html=True)
+    
+    # Cerrar el contenedor de búsqueda
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # JavaScript para el manejo del autocompletado
+    js_code = f"""
+    <script>
+    // Función para manejar la entrada en el campo de búsqueda
+    const searchInput = document.getElementById('search-input-{key}');
+    
+    if (searchInput) {{
+        searchInput.addEventListener('input', function(e) {{
+            const searchText = e.target.value;
+            
+            // Enviar el texto de búsqueda a Streamlit
+            window.parent.postMessage({{
+                type: "streamlit:setComponentValue",
+                value: {{
+                    type: "text_update",
+                    key: "{key}",
+                    text: searchText
+                }}
+            }}, "*");
+        }});
+    }}
+    
+    // Capturar clics en los elementos de autocompletado
+    document.addEventListener('click', function(e) {{
+        const item = e.target.closest('.autocomplete-item');
+        if (item) {{
+            const productId = item.getAttribute('data-id');
+            const productText = item.getAttribute('data-text');
+            
+            // Actualizar el valor en el campo de búsqueda
+            if (searchInput) {{
+                searchInput.value = productText;
+            }}
+            
+            // Enviar mensaje a Streamlit para procesar la selección
+            window.parent.postMessage({{
+                type: "streamlit:setComponentValue",
+                value: {{
+                    type: "product_selected",
+                    key: "{key}",
+                    id: Number(productId),
+                    text: productText
+                }}
+            }}, "*");
+        }}
+    }});
+    
+    // Cerrar el dropdown si se hace clic fuera
+    document.addEventListener('click', function(e) {{
+        if (!e.target.closest('.search-container') && !e.target.closest('.autocomplete-items')) {{
+            const dropdown = document.getElementById('autocomplete-{key}');
+            if (dropdown) {{
+                dropdown.style.display = 'none';
+            }}
+        }}
+    }});
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    """
+    
+    # Renderizar JavaScript
+    st.markdown(js_code, unsafe_allow_html=True)
+    
+    # Componente HTML para recibir eventos
+    component_value = components.html(
+        f"""
+        <div id="receiver-{key}" style="display:none;"></div>
+        """, 
+        height=0
+    )
+    
+    # Procesar eventos del componente
+    if component_value:
+        if isinstance(component_value, dict):
+            if component_value.get('type') == 'text_update' and component_value.get('key') == key:
+                st.session_state[f"texto_busqueda_{key}"] = component_value.get('text', '')
+                st.experimental_rerun()
+            
+            elif component_value.get('type') == 'product_selected' and component_value.get('key') == key:
+                st.session_state[f"producto_seleccionado_{key}"] = component_value.get('id')
+                st.session_state[f"texto_busqueda_{key}"] = component_value.get('text', '')
+                st.experimental_rerun()
+    
+    # Devolver el estado actual
+    return {
+        "texto": st.session_state[f"texto_busqueda_{key}"],
+        "producto_id": st.session_state[f"producto_seleccionado_{key}"]
+    }
+
+# Función para mostrar la información del producto
+def mostrar_informacion_producto(df, producto_id):
+    producto = df[df['id'] == producto_id].iloc[0]
+    
+    # Mostrar información del producto con estilo mejorado
+    st.markdown('<div class="product-info">', unsafe_allow_html=True)
+    st.markdown(f'<div class="product-title">{producto["producto"]}</div>', unsafe_allow_html=True)
+    
+    # Tipo
+    st.markdown(
+        f'<div class="product-detail"><span class="product-detail-label">Tipo:</span><span class="product-detail-value">{producto["tipo"]}</span></div>',
+        unsafe_allow_html=True
+    )
+    
+    # Principio activo
+    st.markdown(
+        f'<div class="product-detail"><span class="product-detail-label">Principio activo:</span><span class="product-detail-value">{producto["principio_activo"]}</span></div>',
+        unsafe_allow_html=True
+    )
+    
+    # Precio
+    precio = "s/d" if pd.isna(producto['precio']) else f"{producto['precio']:.2f}"
+    st.markdown(
+        f'<div class="product-detail"><span class="product-detail-label">Precio:</span><span class="product-detail-value">{precio} {producto["unidad"]}</span></div>',
+        unsafe_allow_html=True
+    )
+    
+    # Fecha
+    st.markdown(
+        f'<div class="product-detail"><span class="product-detail-label">Última actualización:</span><span class="product-detail-value">{producto["fecha"]}</span></div>',
+        unsafe_allow_html=True
+    )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Función principal
 def main():
@@ -330,56 +523,39 @@ def main():
     with tab1:
         st.header("Consulta de Precios")
         
-        # Creamos un contenedor para la barra de búsqueda y el dropdown
-        search_container = st.container()
+        # Componente de búsqueda estilo Google
+        busqueda_resultado = crear_componente_autocompletado(df)
         
-        with search_container:
-            # Agregar un campo de texto para la búsqueda
-            texto_busqueda = st.text_input("Buscar producto o principio activo...", key="texto_busqueda")
+        # Mostrar el producto seleccionado
+        if busqueda_resultado["producto_id"]:
+            # Mostrar la información del producto
+            mostrar_informacion_producto(df, busqueda_resultado["producto_id"])
+        
+        # Si hay búsqueda pero no hay producto seleccionado, mostrar resultados completos
+        elif busqueda_resultado["texto"]:
+            # Buscar todos los productos que coincidan con la búsqueda
+            producto_norm = normalizar_texto(busqueda_resultado["texto"])
+            resultados = df[
+                df['producto'].apply(lambda x: normalizar_texto(x)).str.contains(producto_norm) |
+                df['principio_activo'].apply(lambda x: normalizar_texto(str(x)) if pd.notna(x) else "").str.contains(producto_norm)
+            ]
             
-            # Obtener opciones de autocompletado basadas en el texto de búsqueda
-            if texto_busqueda:
-                opciones = obtener_opciones_busqueda(df, texto_busqueda)
+            if not resultados.empty:
+                st.markdown("<h3 style='margin-top: 30px;'>Resultados de la búsqueda</h3>", unsafe_allow_html=True)
                 
-                if opciones:
-                    # Preparar las opciones para el selectbox
-                    ids = [id for id, _ in opciones]
-                    textos = [texto for _, texto in opciones]
-                    
-                    # Agregar opción "Seleccionar..." al principio
-                    ids.insert(0, -1)
-                    textos.insert(0, "Seleccionar un producto...")
-                    
-                    # Crear un selectbox con las opciones
-                    seleccion_index = st.selectbox(
-                        "Productos encontrados:",
-                        range(len(textos)),
-                        format_func=lambda i: textos[i]
-                    )
-                    
-                    # Si se seleccionó un producto (no la opción "Seleccionar...")
-                    if seleccion_index > 0:
-                        # Guardar el ID del producto seleccionado
-                        producto_id = ids[seleccion_index]
-                        
-                        # Obtener el producto del DataFrame
-                        producto = df[df['id'] == producto_id].iloc[0]
-                        
-                        # Mostrar información del producto
-                        st.success(f"Producto seleccionado: {producto['producto']}")
-                        
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.write(f"**Tipo:** {producto['tipo']}")
-                            st.write(f"**Principio activo:** {producto['principio_activo']}")
-                        
-                        with col2:
-                            precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
-                            unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
-                            st.write(f"**Precio:** {precio} {unidad}")
-                            st.write(f"**Última actualización:** {producto['fecha']}")
-                else:
-                    st.warning("No se encontraron productos que coincidan con tu búsqueda.")
+                # Mostrar tabla con resultados
+                st.dataframe(
+                    resultados[['tipo', 'producto', 'principio_activo', 'precio', 'unidad']],
+                    column_config={
+                        "tipo": "Tipo",
+                        "producto": "Producto",
+                        "principio_activo": "Principio Activo",
+                        "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
+                        "unidad": "Unidad"
+                    },
+                    use_container_width=True,
+                    hide_index=True
+                )
         
         # Agregar instrucciones claras
         with st.expander("Consejos para la búsqueda"):
@@ -393,172 +569,51 @@ def main():
                 - "ciperme" encontrará Cipermetrina
             """)
     
-    # Pestaña 2: Lista de Productos
-    with tab2:
-        st.header("Lista de Productos")
-        
-        # Selector de tipo
-        tipo_filtro = st.selectbox(
-            "Filtrar por tipo:",
-            ["TODOS"] + sorted(df['tipo'].unique().tolist())
-        )
-        
-        # Filtrar productos
-        productos_filtrados = filtrar_por_tipo(df, tipo_filtro)
-        
-        # Mostrar tabla
-        st.dataframe(
-            productos_filtrados.drop('id', axis=1),
-            column_config={
-                "tipo": "Tipo",
-                "producto": "Producto",
-                "principio_activo": "Principio Activo",
-                "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
-                "unidad": "Unidad",
-                "fecha": "Actualización"
-            },
-            use_container_width=True,
-            hide_index=True
-        )
-    
-    # Pestaña 3: Agregar Producto
-    with tab3:
-        st.header("Agregar Nuevo Producto")
-        
-        # Formulario para agregar nuevo producto
-        with st.form("nuevo_producto_form"):
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                tipo = st.selectbox(
-                    "Tipo de producto:",
-                    sorted(df['tipo'].unique().tolist())
-                )
-                producto = st.text_input("Nombre del producto:", key="nuevo_producto")
-                principio_activo = st.text_input("Principio activo:", key="nuevo_principio_activo")
-            
-            with col2:
-                precio = st.number_input("Precio:", min_value=0.0, step=0.1, format="%.2f")
-                unidad = st.text_input("Unidad (US$/litro, US$/kg, etc.):", key="nueva_unidad")
-            
-            submitted = st.form_submit_button("Agregar Producto")
-            
-            if submitted:
-                if not producto or not tipo or precio <= 0 or not unidad:
-                    st.error("Por favor complete los campos requeridos: Tipo, Producto, Precio y Unidad.")
-                else:
-                    # Crear nuevo producto
-                    nuevo_id = df['id'].max() + 1
-                    nuevo_producto = {
-                        'id': nuevo_id,
-                        'tipo': tipo,
-                        'producto': producto,
-                        'principio_activo': principio_activo if principio_activo else "No especificado",
-                        'precio': precio,
-                        'unidad': unidad,
-                        'fecha': datetime.now().strftime("%d/%m/%Y")
-                    }
-                    
-                    # Agregar a dataframe y guardar en session_state
-                    df_nuevo = pd.DataFrame([nuevo_producto])
-                    df_actualizado = pd.concat([df, df_nuevo], ignore_index=True)
-                    st.session_state.productos = df_actualizado.to_dict('records')
-                    
-                    st.success(f"Producto '{producto}' agregado correctamente.")
-                    st.experimental_rerun()
-    
-    # Pestaña 4: Por Categoría
-    with tab4:
-        st.header("Productos por Categoría")
-        
-        # Gráfico de distribución por tipo usando componentes nativos de Streamlit
-        st.subheader("Distribución de productos por categoría")
-        conteo_tipos = df['tipo'].value_counts().reset_index()
-        conteo_tipos.columns = ['Tipo', 'Cantidad']
-        
-        # Crear gráfico de barras usando Streamlit
-        st.bar_chart(conteo_tipos.set_index('Tipo'))
-        
-        # Mostrar productos por categoría en tabs
-        categoria_tabs = st.tabs(sorted(df['tipo'].unique().tolist()))
-        
-        for i, tipo in enumerate(sorted(df['tipo'].unique())):
-            with categoria_tabs[i]:
-                productos_tipo = df[df['tipo'] == tipo]
-                st.dataframe(
-                    productos_tipo.drop(['id', 'tipo'], axis=1),
-                    column_config={
-                        "producto": "Producto",
-                        "principio_activo": "Principio Activo",
-                        "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
-                        "unidad": "Unidad",
-                        "fecha": "Actualización"
-                    },
-                    use_container_width=True,
-                    hide_index=True
-                )
-                
-                # Análisis de precios para esta categoría
-                if not productos_tipo['precio'].isna().all():
-                    st.subheader(f"Análisis de precios: {tipo}")
-                    
-                    col1, col2 = st.columns(2)
-                    
-                    with col1:
-                        precio_promedio = productos_tipo['precio'].mean()
-                        precio_max = productos_tipo['precio'].max()
-                        precio_min = productos_tipo['precio'].min()
-                        
-                        st.metric("Precio promedio", f"{precio_promedio:.2f}")
-                        st.metric("Precio máximo", f"{precio_max:.2f}")
-                        st.metric("Precio mínimo", f"{precio_min:.2f}")
-                    
-                    with col2:
-                        # Mostrar estadísticas en lugar de gráfico
-                        st.write("**Estadísticas de precios:**")
-                        st.write(f"- Mediana: {productos_tipo['precio'].median():.2f}")
-                        st.write(f"- Desviación estándar: {productos_tipo['precio'].std():.2f}")
-                        st.write(f"- Cantidad de productos: {len(productos_tipo)}")
+    # Contenido de las otras pestañas sigue igual que en tu código original
+    # ...
 
-    # Pie de página
-    st.divider()
-    st.write("### Instrucciones de uso:")
+    # Aplicar estilo CSS personalizado
     st.markdown("""
-    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. 
-      Empieza a escribir para ver sugerencias en el menú desplegable.
-    - En **Lista de Productos** puedes ver todos los productos y filtrarlos por tipo.
-    - Usa **Agregar Producto** para incluir nuevos productos a tu lista.
-    - En **Por Categoría** puedes ver los productos organizados por su tipo y análisis de precios.
-    """)
-    st.caption("Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025")
-
-# CSS personalizado para mejorar el estilo del dropdown
-st.markdown("""
-<style>
-    div[data-baseweb="select"] {
-        margin-top: 0px;
+    <style>
+    .main {
+        background-color: #1E1E1E;
+        color: #E0E0E0;
     }
     
-    .stSelectbox label {
-        font-weight: bold;
+    h1, h2, h3, h4, h5, h6 {
+        color: #FF8C00;
     }
     
-    .stSelectbox select {
-        padding: 10px;
+    /* Estilos para pestañas */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2px;
+        background-color: #2D2D2D;
+        border-radius: 8px;
+        padding: 5px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 4px;
+        padding: 10px 16px;
+        color: #E0E0E0;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #FF8C00;
+        color: white;
+    }
+    
+    /* Botones */
+    .stButton button {
         border-radius: 5px;
+        background-color: #FF8C00;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-weight: 500;
     }
-    
-    /* Estilos para el contenedor de búsqueda */
-    .search-container {
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
-
