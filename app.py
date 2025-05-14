@@ -15,6 +15,60 @@ def convert_sd_to_nan(value):
     if isinstance(value, str) and value.lower() == 's/d':
         return np.nan
     return value
+    import streamlit as st
+import pandas as pd
+from datetime import datetime
+import numpy as np
+
+# Configuración básica de la página sin estilización externa
+st.set_page_config(
+    page_title="Sistema de Gestión de Agroquímicos",
+    page_icon="🌱",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# Aplicar CSS básico sin depender de recursos externos
+st.markdown("""
+<style>
+    /* Estilos básicos que no requieren carga externa */
+    .main {
+        background-color: #1E1E1E;
+        color: #E0E0E0;
+    }
+    
+    h1, h2, h3 {
+        color: #FF8C00;
+    }
+    
+    /* Estilos para el contenedor de autocompletado */
+    .autocomplete-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    .autocomplete-items {
+        position: absolute;
+        background-color: #333;
+        border: 1px solid #555;
+        z-index: 99;
+        width: 100%;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    .autocomplete-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #444;
+    }
+    
+    .autocomplete-item:hover {
+        background-color: #444;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# El resto del código con implementación simplificada del autocompletado
 
 # Carga de datos iniciales
 @st.cache_data
