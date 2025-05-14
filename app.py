@@ -32,11 +32,6 @@ def load_initial_data():
         {"tipo": "SEMILLA", "producto": "SORGO GRAN.HIBR.", "principio_activo": "Germoplasma híbrido granífero", "precio": 8.30, "unidad": "US$/kg"},
         {"tipo": "SEMILLA", "producto": "SORGO GRAN. IG", "principio_activo": "Germoplasma granífero IG", "precio": 9.40, "unidad": "US$/kg"},
         {"tipo": "SEMILLA", "producto": "TRIGO FISCALIZADO", "principio_activo": "Germoplasma fiscalizado", "precio": 0.46, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GALANT HL", "principio_activo": "Haloxifop-R-metil éster", "precio": 22.0, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GALANT RLPU", "principio_activo": "Haloxifop-R-metil éster", "precio": 10.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "GALANT MAX", "principio_activo": "Haloxifop-R-metil éster", "precio": 43.0, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GEMMIT TOP", "principio_activo": "Haloxifop-R-metil éster", "precio": 30.0, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GESAGARD 50 FW", "principio_activo": "Prometrina", "precio": 10.4, "unidad": "US$/litro"},
     ]
     
     # Herbicidas
@@ -70,6 +65,11 @@ def load_initial_data():
         {"tipo": "HERBICIDA", "producto": "FINESSE", "principio_activo": "Clorsulfuron + Metsulfuron", "precio": 330.0, "unidad": "US$/kg"},
         {"tipo": "HERBICIDA", "producto": "FLOSIL", "principio_activo": "Fluroxipir", "precio": 10.1, "unidad": "US$/litro"},
         {"tipo": "HERBICIDA", "producto": "FLUROCLORIDONA 25%", "principio_activo": "Flurocloridona", "precio": 18.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "GALANT HL", "principio_activo": "Haloxifop-R-metil éster", "precio": 22.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "GALANT RLPU", "principio_activo": "Haloxifop-R-metil éster", "precio": 10.0, "unidad": "US$/bolsa"},
+        {"tipo": "HERBICIDA", "producto": "GALANT MAX", "principio_activo": "Haloxifop-R-metil éster", "precio": 43.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "GEMMIT TOP", "principio_activo": "Haloxifop-R-metil éster", "precio": 30.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "GESAGARD 50 FW", "principio_activo": "Prometrina", "precio": 10.4, "unidad": "US$/litro"},
         {"tipo": "HERBICIDA", "producto": "GLIFOSATO 54%", "principio_activo": "N-(fosfonometil)glicina", "precio": 4.0, "unidad": "US$/litro"},
         {"tipo": "HERBICIDA", "producto": "GLIFOMAX GS", "principio_activo": "N-(fosfonometil)glicina", "precio": 5.0, "unidad": "US$/litro"},
         {"tipo": "HERBICIDA", "producto": "GLIFOPAMPA", "principio_activo": "N-(fosfonometil)glicina", "precio": 3.8, "unidad": "US$/litro"},
@@ -209,6 +209,7 @@ def load_initial_data():
         {"tipo": "ACEITE", "producto": "RIZOSPRAY EXTREMO", "principio_activo": "Tensioactivo siliconado", "precio": 18.5, "unidad": "US$/litro"},
         {"tipo": "ACEITE", "producto": "SULFATO de AMONIO lq", "principio_activo": "Sulfato de amonio líquido", "precio": 1.3, "unidad": "US$/litro"}
     ]
+    
     
     # Combinar todos los productos
     productos = semillas + herbicidas + insecticidas + fungicidas + fertilizantes + curasemillas + aceites
