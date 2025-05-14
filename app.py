@@ -245,75 +245,73 @@ def normalizar_texto(texto):
         texto = texto.replace("24d", "24 d").replace("24 d", "2 4 d")
     return texto
 
-# Función mejorada para buscar productos
-def buscar_productos_flexible(df, busqueda):
-    if not busqueda:
-        return None
+# Función para obtener opciones de búsqueda en tiempo real
+def obtener_opciones_busqueda(df, texto, max_opciones=10):
+    if not texto or len(texto) < 2:
+        return []
     
-    # Normalizar la búsqueda
-    busqueda_norm = normalizar_texto(busqueda)
-    busqueda_tokens = set(busqueda_norm.split())
+    # Normalizar el texto de búsqueda
+    texto_norm = normalizar_texto(texto)
     
     # Normalizar las columnas del DataFrame para la búsqueda
     df['producto_norm'] = df['producto'].apply(normalizar_texto)
     df['principio_activo_norm'] = df['principio_activo'].apply(lambda x: normalizar_texto(x) if pd.notna(x) else '')
     
-    # Calcular puntuación de coincidencia
+    # Crear función para calcular puntuación de coincidencia
     def calcular_puntuacion(row):
         puntuacion = 0
         
-        # Coincidencia exacta con producto
-        if row['producto_norm'] == busqueda_norm:
+        # Coincidencia exacta
+        if row['producto_norm'] == texto_norm:
             puntuacion += 100
-        # Coincidencia exacta con principio activo
-        if row['principio_activo_norm'] == busqueda_norm:
+        if row['principio_activo_norm'] == texto_norm:
             puntuacion += 90
-        
-        # Producto contiene la búsqueda
-        if busqueda_norm in row['producto_norm']:
-            puntuacion += 80
-        # Principio activo contiene la búsqueda
-        if busqueda_norm in row['principio_activo_norm']:
-            puntuacion += 70
             
-        # Buscar tokens individuales
-        for token in busqueda_tokens:
-            if token in row['producto_norm'].split():
+        # Coincidencia al inicio del nombre
+        if row['producto_norm'].startswith(texto_norm):
+            puntuacion += 80
+        if row['principio_activo_norm'].startswith(texto_norm):
+            puntuacion += 70
+        
+        # Coincidencia parcial
+        if texto_norm in row['producto_norm']:
+            puntuacion += 60
+        if texto_norm in row['principio_activo_norm']:
+            puntuacion += 50
+        
+        # Coincidencia por tokens (palabras)
+        tokens_busqueda = texto_norm.split()
+        tokens_producto = row['producto_norm'].split()
+        tokens_principio = row['principio_activo_norm'].split()
+        
+        for token in tokens_busqueda:
+            if token in tokens_producto:
+                puntuacion += 20
+            if token in tokens_principio:
                 puntuacion += 15
-            if token in row['principio_activo_norm'].split():
-                puntuacion += 10
-            if token in row['producto_norm']:
-                puntuacion += 5
-            if token in row['principio_activo_norm']:
-                puntuacion += 5
         
         return puntuacion
     
-    # Aplicar puntuación a cada fila
+    # Aplicar puntuación
     df['puntuacion'] = df.apply(calcular_puntuacion, axis=1)
     
-    # Filtrar productos con puntuación mayor a 0 y ordenar por puntuación
-    resultado = df[df['puntuacion'] > 0].sort_values('puntuacion', ascending=False)
+    # Filtrar resultados con puntuación > 0 y ordenar
+    resultados = df[df['puntuacion'] > 0].sort_values('puntuacion', ascending=False)
     
     # Limpiar columnas temporales
     df.drop(['producto_norm', 'principio_activo_norm', 'puntuacion'], axis=1, inplace=True)
     
-    return resultado if not resultado.empty else None
-
-# Función para obtener sugerencias en tiempo real
-def obtener_sugerencias(df, texto, max_sugerencias=5):
-    if not texto or len(texto) < 2:
+    # Devolver opciones para el select_box
+    if resultados.empty:
         return []
     
-    resultados = buscar_productos_flexible(df, texto)
+    # Crear las opciones con formato "PRODUCTO (TIPO) - Principio Activo"
+    opciones = []
+    for _, row in resultados.head(max_opciones).iterrows():
+        opcion_texto = f"{row['producto']} ({row['tipo']}) - {row['principio_activo']}"
+        opciones.append((row['id'], opcion_texto))
     
-    if resultados is None:
-        return []
-    
-    # Obtener las sugerencias (top N)
-    sugerencias = resultados.head(max_sugerencias)[['id', 'tipo', 'producto', 'principio_activo']]
-    
-    return sugerencias
+    return opciones
 
 # Función principal
 def main():
@@ -331,82 +329,68 @@ def main():
     with tab1:
         st.header("Consulta de Precios")
         
-        # Campo de búsqueda con sugerencias en tiempo real
-        busqueda = st.text_input("Buscar producto o principio activo...", key="busqueda")
+        # Creamos un contenedor para la barra de búsqueda y el dropdown
+        search_container = st.container()
         
-        # Mostrar sugerencias en tiempo real
-        if busqueda:
-            sugerencias = obtener_sugerencias(df, busqueda)
+        with search_container:
+            # Agregar un campo de texto para la búsqueda
+            texto_busqueda = st.text_input("Buscar producto o principio activo...", key="texto_busqueda")
             
-            if not sugerencias.empty:
-                st.write("Sugerencias:")
-                for i, sugerencia in sugerencias.iterrows():
-                    if st.button(f"{sugerencia['producto']} ({sugerencia['tipo']})", key=f"sug_{sugerencia['id']}"):
-                        # Al hacer clic en una sugerencia, actualizar la búsqueda y realizar búsqueda
-                        st.session_state.producto_seleccionado = sugerencia['id']
-                        st.experimental_rerun()
+            # Obtener opciones de autocompletado basadas en el texto de búsqueda
+            if texto_busqueda:
+                opciones = obtener_opciones_busqueda(df, texto_busqueda)
                 
-                # Mostrar línea separadora
-                st.markdown("---")
-        
-        # Procesar selección de producto 
-        if 'producto_seleccionado' in st.session_state:
-            producto = df[df['id'] == st.session_state.producto_seleccionado].iloc[0]
-            
-            # Mostrar información del producto seleccionado
-            st.success(f"Producto seleccionado: {producto['producto']}")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write(f"**Tipo:** {producto['tipo']}")
-                st.write(f"**Principio activo:** {producto['principio_activo']}")
-            
-            with col2:
-                precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
-                unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
-                st.write(f"**Precio:** {precio} {unidad}")
-                st.write(f"**Última actualización:** {producto['fecha']}")
-                
-            st.button("Borrar selección", on_click=lambda: st.session_state.pop('producto_seleccionado'))
-                
-        elif busqueda:
-            # Si no hay producto seleccionado pero hay una búsqueda, realizar búsqueda
-            resultado = buscar_productos_flexible(df, busqueda)
-            
-            if resultado is not None and not resultado.empty:
-                # Mostrar el primer resultado
-                producto = resultado.iloc[0]
-                
-                # Mostrar información del producto encontrado
-                st.write(f"**Mejor coincidencia:** {producto['producto']}")
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.write(f"**Tipo:** {producto['tipo']}")
-                    st.write(f"**Principio activo:** {producto['principio_activo']}")
-                
-                with col2:
-                    precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
-                    unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
-                    st.write(f"**Precio:** {precio} {unidad}")
-                    st.write(f"**Última actualización:** {producto['fecha']}")
-                
-                # Si hay más resultados, mostrarlos
-                if len(resultado) > 1:
-                    st.write("Otros productos coincidentes:")
-                    st.dataframe(
-                        resultado[1:].drop(['id', 'fecha'], axis=1), 
-                        column_config={
-                            "tipo": "Tipo",
-                            "producto": "Producto",
-                            "principio_activo": "Principio Activo",
-                            "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
-                            "unidad": "Unidad"
-                        },
-                        hide_index=True
+                if opciones:
+                    # Preparar las opciones para el selectbox
+                    ids = [id for id, _ in opciones]
+                    textos = [texto for _, texto in opciones]
+                    
+                    # Agregar opción "Seleccionar..." al principio
+                    ids.insert(0, -1)
+                    textos.insert(0, "Seleccionar un producto...")
+                    
+                    # Crear un selectbox con las opciones
+                    seleccion_index = st.selectbox(
+                        "Productos encontrados:",
+                        range(len(textos)),
+                        format_func=lambda i: textos[i]
                     )
-            elif busqueda.strip():  # Solo mostrar error si hay texto en la búsqueda
-                st.warning("Producto no encontrado. Intente con otro término de búsqueda.")
+                    
+                    # Si se seleccionó un producto (no la opción "Seleccionar...")
+                    if seleccion_index > 0:
+                        # Guardar el ID del producto seleccionado
+                        producto_id = ids[seleccion_index]
+                        
+                        # Obtener el producto del DataFrame
+                        producto = df[df['id'] == producto_id].iloc[0]
+                        
+                        # Mostrar información del producto
+                        st.success(f"Producto seleccionado: {producto['producto']}")
+                        
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.write(f"**Tipo:** {producto['tipo']}")
+                            st.write(f"**Principio activo:** {producto['principio_activo']}")
+                        
+                        with col2:
+                            precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
+                            unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
+                            st.write(f"**Precio:** {precio} {unidad}")
+                            st.write(f"**Última actualización:** {producto['fecha']}")
+                else:
+                    st.warning("No se encontraron productos que coincidan con tu búsqueda.")
+        
+        # Agregar instrucciones claras
+        with st.expander("Consejos para la búsqueda"):
+            st.markdown("""
+            - Puedes buscar por nombre de producto o principio activo
+            - La búsqueda funciona aunque escribas solo una parte del nombre
+            - Es flexible con los acentos y mayúsculas
+            - Ejemplos:
+                - "2,4D" encontrará todos los productos con 2,4-D
+                - "glifo" encontrará todos los productos con glifosato
+                - "ciperme" encontrará Cipermetrina
+            """)
     
     # Pestaña 2: Lista de Productos
     with tab2:
@@ -539,12 +523,40 @@ def main():
     st.divider()
     st.write("### Instrucciones de uso:")
     st.markdown("""
-    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. Empieza a escribir para ver sugerencias.
+    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. 
+      Empieza a escribir para ver sugerencias en el menú desplegable.
     - En **Lista de Productos** puedes ver todos los productos y filtrarlos por tipo.
     - Usa **Agregar Producto** para incluir nuevos productos a tu lista.
     - En **Por Categoría** puedes ver los productos organizados por su tipo y análisis de precios.
     """)
     st.caption("Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025")
+
+# CSS personalizado para mejorar el estilo del dropdown
+st.markdown("""
+<style>
+    div[data-baseweb="select"] {
+        margin-top: 0px;
+    }
+    
+    .stSelectbox label {
+        font-weight: bold;
+    }
+    
+    .stSelectbox select {
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    /* Estilos para el contenedor de búsqueda */
+    .search-container {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+</style>
+""", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
