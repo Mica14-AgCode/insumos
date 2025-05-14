@@ -8,7 +8,8 @@ import streamlit.components.v1 as components
 st.set_page_config(
     page_title="Sistema de Gestión de Agroquímicos",
     page_icon="🌱",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
 # Función para convertir "s/d" a NaN
@@ -316,126 +317,432 @@ def obtener_sugerencias(df, texto, max_sugerencias=10):
     
     return sugerencias
 
+# Aplicar tema oscuro personalizado
+def set_page_style():
+    # Aplicar estilos globales a la página
+    st.markdown("""
+    <style>
+        /* Estilo para tema oscuro */
+        .main {
+            background-color: #1E1E1E;
+            color: #E0E0E0;
+        }
+        
+        /* Estilo para los contenedores */
+        .block-container {
+            padding-top: 2rem;
+        }
+        
+        /* Títulos */
+        h1, h2, h3, h4, h5, h6 {
+            color: #FF8C00;
+        }
+        
+        /* Campos de entrada */
+        div[data-baseweb="input"] input {
+            background-color: #333333;
+            color: white;
+            border: 1px solid #555555;
+            border-radius: 5px;
+            padding: 10px 12px;
+            font-size: 16px;
+        }
+        
+        div[data-baseweb="input"] input:focus {
+            border-color: #FF8C00;
+            box-shadow: 0 0 0 1px #FF8C00;
+        }
+        
+        /* Estilo para pestañas */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 2px;
+            background-color: #2D2D2D;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            border-radius: 4px;
+            padding: 10px 16px;
+            color: #E0E0E0;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background-color: #FF8C00;
+            color: white;
+        }
+        
+        /* Botones */
+        .stButton button {
+            border-radius: 5px;
+            background-color: #FF8C00;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-weight: 500;
+        }
+        
+        .stButton button:hover {
+            background-color: #FF6A00;
+        }
+        
+        /* Tablas */
+        .dataframe-container {
+            border-radius: 8px;
+            border: 1px solid #555555;
+            overflow: hidden;
+        }
+        
+        .dataframe {
+            width: 100%;
+            background-color: #2D2D2D;
+            color: #E0E0E0;
+        }
+        
+        .dataframe thead th {
+            background-color: #3D3D3D;
+            color: #FF8C00;
+            font-weight: 500;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .dataframe tbody tr:nth-child(odd) {
+            background-color: #333333;
+        }
+        
+        .dataframe td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #444444;
+        }
+        
+        /* Ocultar cabecera y pie de Streamlit */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        
+        /* Dropdown container */
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        /* Estilos para el dropdown de autocompletado */
+        .autocomplete-items {
+            position: absolute;
+            border-radius: 0 0 8px 8px;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #333;
+            border: 1px solid #555;
+            border-top: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .autocomplete-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #444;
+        }
+        
+        .autocomplete-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .autocomplete-item:hover {
+            background-color: #444;
+        }
+        
+        .autocomplete-item-icon {
+            margin-right: 10px;
+            color: #999;
+            width: 20px;
+        }
+        
+        .autocomplete-item-text {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #E0E0E0;
+        }
+        
+        .autocomplete-item-type {
+            color: #999;
+            font-size: 12px;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        /* Input de búsqueda personalizado */
+        .search-input {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #FF8C00;
+            box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3);
+        }
+
+        /* Contenedor principal */
+        .custom-container {
+            background-color: #262626;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Info del producto */
+        .product-info {
+            background-color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #FF8C00;
+        }
+
+        .product-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 15px;
+        }
+
+        .product-detail {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #444;
+            padding: 8px 0;
+        }
+
+        .product-detail-label {
+            font-weight: 500;
+            color: #999;
+        }
+
+        .product-detail-value {
+            color: white;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Inyectar JavaScript para el autocompletado
+def inject_autocomplete_js(texto_busqueda):
+    js_code = f"""
+    <script>
+    // Función para actualizar el valor de búsqueda en el estado de Streamlit
+    function updateSearchValue(value) {{
+        // Establecer el valor en el campo de texto
+        const inputElement = document.querySelector('input[aria-label="Buscar producto o principio activo..."]');
+        if (inputElement) {{
+            // Create a new input event
+            const inputEvent = new Event('input', {{ bubbles: true }});
+            
+            // Set the value and dispatch the event
+            inputElement.value = value;
+            inputElement.dispatchEvent(inputEvent);
+            
+            // Focus on the input after selection
+            inputElement.focus();
+        }}
+    }}
+    
+    // Capturar clics en los elementos de autocompletado
+    document.addEventListener('click', function(e) {{
+        const item = e.target.closest('.autocomplete-item');
+        if (item) {{
+            const productId = item.getAttribute('data-id');
+            const productText = item.getAttribute('data-text');
+            
+            // Actualizar el valor en el campo de búsqueda
+            updateSearchValue(productText);
+            
+            // Enviar mensaje a Streamlit para procesar la selección
+            const productData = {{
+                id: Number(productId),
+                text: productText
+            }};
+            
+            window.parent.postMessage({{
+                type: "streamlit:setComponentValue",
+                value: productData
+            }}, "*");
+        }}
+    }});
+    
+    // Cerrar el dropdown si se hace clic fuera
+    document.addEventListener('click', function(e) {{
+        if (!e.target.closest('.search-container') && !e.target.closest('.autocomplete-items')) {{
+            const dropdown = document.querySelector('.autocomplete-items');
+            if (dropdown) {{
+                dropdown.style.display = 'none';
+            }}
+        }}
+    }});
+
+    // Posicionamiento inicial de la caja de autocompletado
+    document.addEventListener('DOMContentLoaded', function() {{
+        const inputElement = document.querySelector('input[aria-label="Buscar producto o principio activo..."]');
+        const searchContainer = document.querySelector('.search-container');
+        
+        if (inputElement && searchContainer) {{
+            // Obtener la posición del input
+            const inputRect = inputElement.getBoundingClientRect();
+            
+            // Actualizar posición del contenedor
+            searchContainer.style.position = 'relative';
+            searchContainer.style.width = inputRect.width + 'px';
+        }}
+    }});
+    </script>
+    """
+    return js_code
+
 # Función principal
 def main():
+    # Configurar estilo de página
+    set_page_style()
+    
     # Cargar datos
     df = load_initial_data()
     
     # Título de la aplicación
-    st.title("Sistema de Gestión de Agroquímicos")
-    st.write("Fecha de actualización: 05/05/2025")
+    st.markdown("<h1 style='text-align: center; color: #FF8C00;'>Sistema de Gestión de Agroquímicos</h1>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align: center; color: #AAA; margin-bottom: 30px;'>Fecha de actualización: 05/05/2025</p>", unsafe_allow_html=True)
     
     # Crear pestañas
     tab1, tab2, tab3, tab4 = st.tabs(["Consulta de Precios", "Lista de Productos", "Agregar Producto", "Por Categoría"])
     
     # Pestaña 1: Consulta de Precios
     with tab1:
-        st.header("Consulta de Precios")
+        st.markdown("<h2>Consulta de Precios</h2>", unsafe_allow_html=True)
         
         # Inicializar o actualizar variables de estado
         if 'busqueda' not in st.session_state:
             st.session_state.busqueda = ""
-        if 'sugerencias' not in st.session_state:
-            st.session_state.sugerencias = []
-        if 'mostrar_sugerencias' not in st.session_state:
-            st.session_state.mostrar_sugerencias = False
         if 'producto_seleccionado' not in st.session_state:
             st.session_state.producto_seleccionado = None
         
-        # Función para actualizar búsqueda y sugerencias
-        def actualizar_busqueda():
-            busqueda = st.session_state.texto_busqueda
-            st.session_state.busqueda = busqueda
-            st.session_state.sugerencias = obtener_sugerencias(df, busqueda)
-            st.session_state.mostrar_sugerencias = bool(busqueda and st.session_state.sugerencias)
-            st.session_state.producto_seleccionado = None
+        # Crear el campo de búsqueda personalizado
+        st.markdown("<div class='search-container'>", unsafe_allow_html=True)
         
-        # Función para seleccionar un producto
-        def seleccionar_producto(id_producto):
-            st.session_state.producto_seleccionado = id_producto
-            producto = df[df['id'] == id_producto].iloc[0]
-            st.session_state.busqueda = producto['producto']
-            st.session_state.texto_busqueda = producto['producto']
-            st.session_state.mostrar_sugerencias = False
+        # Input de búsqueda
+        texto_busqueda = st.text_input("Buscar producto o principio activo...", value=st.session_state.busqueda)
         
-        # Crear el campo de búsqueda
-        st.text_input(
-            "Buscar producto o principio activo...",
-            key="texto_busqueda",
-            value=st.session_state.busqueda,
-            on_change=actualizar_busqueda
-        )
+        # Obtener sugerencias basadas en el texto
+        sugerencias = obtener_sugerencias(df, texto_busqueda)
         
-        # Crear componente HTML personalizado para el dropdown de sugerencias estilo Google
-        if st.session_state.mostrar_sugerencias:
-            sugerencias_html = """
-            <div style="margin-top: -5px; border: 1px solid #dfe1e5; border-radius: 0 0 24px 24px; background-color: white; box-shadow: 0 4px 6px rgba(32,33,36,.28); width: 100%;">
+        # Mostrar dropdown de sugerencias si hay texto y resultados
+        if texto_busqueda and sugerencias:
+            # Crear HTML para el dropdown de sugerencias
+            suggestions_html = """
+            <div class="autocomplete-items">
             """
             
-            for i, sugerencia in enumerate(st.session_state.sugerencias):
-                # Crear el HTML para cada sugerencia
-                sugerencias_html += f"""
-                <div onclick="handleSuggestionClick({sugerencia['id']})" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; font-size: 16px; color: #212121;">
-                    <span style="margin-right: 8px; color: #70757a;"><i class="fas fa-search" style="font-size: 14px;"></i></span>
-                    <span style="flex-grow: 1;">{sugerencia['texto']}</span>
-                    <span style="color: #70757a; font-size: 13px;">{sugerencia['tipo']}</span>
+            for sugerencia in sugerencias:
+                suggestions_html += f"""
+                <div class="autocomplete-item" data-id="{sugerencia['id']}" data-text="{sugerencia['texto']}">
+                    <div class="autocomplete-item-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="autocomplete-item-text">{sugerencia['texto']}</div>
+                    <div class="autocomplete-item-type">{sugerencia['tipo']}</div>
                 </div>
                 """
-                # Agregar separador entre sugerencias (excepto la última)
-                if i < len(st.session_state.sugerencias) - 1:
-                    sugerencias_html += '<div style="border-top: 1px solid #e8eaed; margin: 0 14px;"></div>'
             
-            sugerencias_html += """
-            </div>
-            <script>
-            function handleSuggestionClick(id) {
-                // Enviar mensaje al componente Streamlit
-                window.parent.postMessage({
-                    type: "streamlit:setComponentValue",
-                    value: id
-                }, "*");
-            }
-            </script>
-            """
+            suggestions_html += "</div>"
             
-            # Agregar estilos de Font Awesome para los iconos
-            sugerencias_html = """
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-            """ + sugerencias_html
-            
-            # Renderizar el componente HTML
-            sugerencias_component = components.html(sugerencias_html, height=len(st.session_state.sugerencias) * 45 + 10)
-            
-            # Capturar clics en las sugerencias
-            if sugerencias_component:
-                seleccionar_producto(sugerencias_component)
+            # Renderizar el dropdown
+            st.markdown(suggestions_html, unsafe_allow_html=True)
         
-        # Mostrar detalles del producto seleccionado
+        # Cerrar el contenedor de búsqueda
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Inyectar JavaScript para la funcionalidad del autocompletado
+        st.markdown(inject_autocomplete_js(texto_busqueda), unsafe_allow_html=True)
+        
+        # Componente para recibir la selección de sugerencias
+        component_value = components.html(
+            """
+            <div id="suggestion-receiver" style="display:none;"></div>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+            """, 
+            height=0
+        )
+        
+        # Procesar la selección
+        if component_value:
+            if isinstance(component_value, dict) and 'id' in component_value:
+                st.session_state.producto_seleccionado = component_value['id']
+                st.session_state.busqueda = component_value['text']
+                st.experimental_rerun()
+        
+        # Mostrar el producto seleccionado
         if st.session_state.producto_seleccionado:
             producto = df[df['id'] == st.session_state.producto_seleccionado].iloc[0]
             
-            # Mostrar información del producto
-            st.success(f"Producto seleccionado: {producto['producto']}")
+            # Mostrar información del producto con estilo mejorado
+            st.markdown('<div class="product-info">', unsafe_allow_html=True)
+            st.markdown(f'<div class="product-title">{producto["producto"]}</div>', unsafe_allow_html=True)
             
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write(f"**Tipo:** {producto['tipo']}")
-                st.write(f"**Principio activo:** {producto['principio_activo']}")
+            # Tipo
+            st.markdown(
+                f'<div class="product-detail"><span class="product-detail-label">Tipo:</span><span class="product-detail-value">{producto["tipo"]}</span></div>',
+                unsafe_allow_html=True
+            )
             
-            with col2:
-                precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
-                unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
-                st.write(f"**Precio:** {precio} {unidad}")
-                st.write(f"**Última actualización:** {producto['fecha']}")
+            # Principio activo
+            st.markdown(
+                f'<div class="product-detail"><span class="product-detail-label">Principio activo:</span><span class="product-detail-value">{producto["principio_activo"]}</span></div>',
+                unsafe_allow_html=True
+            )
+            
+            # Precio
+            precio = "s/d" if pd.isna(producto['precio']) else f"{producto['precio']:.2f}"
+            st.markdown(
+                f'<div class="product-detail"><span class="product-detail-label">Precio:</span><span class="product-detail-value">{precio} {producto["unidad"]}</span></div>',
+                unsafe_allow_html=True
+            )
+            
+            # Fecha
+            st.markdown(
+                f'<div class="product-detail"><span class="product-detail-label">Última actualización:</span><span class="product-detail-value">{producto["fecha"]}</span></div>',
+                unsafe_allow_html=True
+            )
+            
+            st.markdown('</div>', unsafe_allow_html=True)
         
-        # Si no hay producto seleccionado pero hay búsqueda, mostrar resultados
-        elif st.session_state.busqueda and not st.session_state.mostrar_sugerencias:
-            resultado = df[df['producto'].str.contains(st.session_state.busqueda, case=False, na=False)]
+        # Si hay búsqueda pero no hay producto seleccionado, mostrar resultados completos
+        elif texto_busqueda:
+            # Buscar todos los productos que coincidan con la búsqueda
+            producto_norm = normalizar_texto(texto_busqueda)
+            resultados = df[
+                df['producto'].apply(lambda x: normalizar_texto(x)).str.contains(producto_norm) |
+                df['principio_activo'].apply(lambda x: normalizar_texto(str(x)) if pd.notna(x) else "").str.contains(producto_norm)
+            ]
             
-            if not resultado.empty:
-                st.write(f"Resultados para '{st.session_state.busqueda}':")
+            if not resultados.empty:
+                st.markdown("<h3 style='margin-top: 30px;'>Resultados de la búsqueda</h3>", unsafe_allow_html=True)
+                
+                # Mostrar tabla con resultados
                 st.dataframe(
-                    resultado[['tipo', 'producto', 'principio_activo', 'precio', 'unidad']],
+                    resultados[['tipo', 'producto', 'principio_activo', 'precio', 'unidad']],
                     column_config={
                         "tipo": "Tipo",
                         "producto": "Producto",
@@ -446,12 +753,10 @@ def main():
                     use_container_width=True,
                     hide_index=True
                 )
-            else:
-                st.warning(f"No se encontraron productos que coincidan con '{st.session_state.busqueda}'")
     
     # Pestaña 2: Lista de Productos
     with tab2:
-        st.header("Lista de Productos")
+        st.markdown("<h2>Lista de Productos</h2>", unsafe_allow_html=True)
         
         # Selector de tipo
         tipo_filtro = st.selectbox(
@@ -479,7 +784,7 @@ def main():
     
     # Pestaña 3: Agregar Producto
     with tab3:
-        st.header("Agregar Nuevo Producto")
+        st.markdown("<h2>Agregar Nuevo Producto</h2>", unsafe_allow_html=True)
         
         # Formulario para agregar nuevo producto
         with st.form("nuevo_producto_form"):
@@ -525,7 +830,7 @@ def main():
     
     # Pestaña 4: Por Categoría
     with tab4:
-        st.header("Productos por Categoría")
+        st.markdown("<h2>Productos por Categoría</h2>", unsafe_allow_html=True)
         
         # Gráfico de distribución por tipo usando componentes nativos de Streamlit
         st.subheader("Distribución de productos por categoría")
@@ -538,6 +843,7 @@ def main():
         # Mostrar productos por categoría en tabs
         categoria_tabs = st.tabs(sorted(df['tipo'].unique().tolist()))
         
+        # Pestaña 4: Por Categoría (continuación)
         for i, tipo in enumerate(sorted(df['tipo'].unique())):
             with categoria_tabs[i]:
                 productos_tipo = df[df['tipo'] == tipo]
@@ -556,7 +862,7 @@ def main():
                 
                 # Análisis de precios para esta categoría
                 if not productos_tipo['precio'].isna().all():
-                    st.subheader(f"Análisis de precios: {tipo}")
+                    st.markdown(f"<h3>Análisis de precios: {tipo}</h3>", unsafe_allow_html=True)
                     
                     col1, col2 = st.columns(2)
                     
@@ -571,22 +877,28 @@ def main():
                     
                     with col2:
                         # Mostrar estadísticas en lugar de gráfico
-                        st.write("**Estadísticas de precios:**")
-                        st.write(f"- Mediana: {productos_tipo['precio'].median():.2f}")
-                        st.write(f"- Desviación estándar: {productos_tipo['precio'].std():.2f}")
-                        st.write(f"- Cantidad de productos: {len(productos_tipo)}")
+                        st.markdown("<div style='background-color: #333; padding: 15px; border-radius: 8px;'>", unsafe_allow_html=True)
+                        st.markdown("<p style='font-weight: bold; color: #FF8C00;'>Estadísticas de precios:</p>", unsafe_allow_html=True)
+                        st.markdown(f"<p>• Mediana: <span style='color: white;'>{productos_tipo['precio'].median():.2f}</span></p>", unsafe_allow_html=True)
+                        st.markdown(f"<p>• Desviación estándar: <span style='color: white;'>{productos_tipo['precio'].std():.2f}</span></p>", unsafe_allow_html=True)
+                        st.markdown(f"<p>• Cantidad de productos: <span style='color: white;'>{len(productos_tipo)}</span></p>", unsafe_allow_html=True)
+                        st.markdown("</div>", unsafe_allow_html=True)
 
     # Pie de página
-    st.divider()
-    st.write("### Instrucciones de uso:")
+    st.markdown("<hr style='margin-top: 30px; border-color: #444;'>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color: #FF8C00;'>Instrucciones de uso:</h3>", unsafe_allow_html=True)
     st.markdown("""
-    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. 
-      Empieza a escribir para ver sugerencias tipo Google.
-    - En **Lista de Productos** puedes ver todos los productos y filtrarlos por tipo.
-    - Usa **Agregar Producto** para incluir nuevos productos a tu lista.
-    - En **Por Categoría** puedes ver los productos organizados por su tipo y análisis de precios.
-    """)
-    st.caption("Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025")
+    <div style='background-color: #333; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
+        <ul style='margin-left: 20px;'>
+            <li>En la pestaña <strong style='color: #FF8C00;'>Consulta de Precios</strong> puedes buscar rápidamente los precios de cualquier producto. 
+                Empieza a escribir y aparecerán sugerencias automáticamente.</li>
+            <li>En <strong style='color: #FF8C00;'>Lista de Productos</strong> puedes ver todos los productos y filtrarlos por tipo.</li>
+            <li>Usa <strong style='color: #FF8C00;'>Agregar Producto</strong> para incluir nuevos productos a tu lista.</li>
+            <li>En <strong style='color: #FF8C00;'>Por Categoría</strong> puedes ver los productos organizados por su tipo y análisis de precios.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #999; font-size: 12px;'>Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
