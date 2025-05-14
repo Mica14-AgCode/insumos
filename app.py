@@ -21,193 +21,193 @@ def convert_sd_to_nan(value):
 def load_initial_data():
     # Semillas
     semillas = [
-        {"tipo": "SEMILLA", "producto": "GIRASOL HIBRIDO", "droga": "Germoplasma híbrido", "precio": 200.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "GIRASOL HIBRIDO CL", "droga": "Germoplasma híbrido resistente a imidazolinonas", "precio": 243.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "MAIZ VT3P", "droga": "Germoplasma híbrido tecnología VT3Pro", "precio": 193.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "MAIZ Hibrido", "droga": "Germoplasma híbrido", "precio": 147.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "MAIZ VIPTERA3", "droga": "Germoplasma híbrido tecnología Viptera", "precio": 175.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "MAIZ MG/RR2", "droga": "Germoplasma híbrido con tecnología MG/RR2", "precio": 175.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "MAIZ MG CL", "droga": "Germoplasma híbrido con tecnología MG CL", "precio": 162.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "SOJA RR", "droga": "Germoplasma con tecnología RR", "precio": 0.72, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "SORGO GRAN.HIBR.", "droga": "Germoplasma híbrido granífero", "precio": 8.30, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "SORGO GRAN. IG", "droga": "Germoplasma granífero IG", "precio": 9.40, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "TRIGO FISCALIZADO", "droga": "Germoplasma fiscalizado", "precio": 0.46, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GALANT HL", "droga": "Haloxifop-R-metil éster", "precio": 22.0, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GALANT RLPU", "droga": "Haloxifop-R-metil éster", "precio": 10.0, "unidad": "US$/bolsa"},
-        {"tipo": "SEMILLA", "producto": "GALANT MAX", "droga": "Haloxifop-R-metil éster", "precio": 43.0, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GEMMIT TOP", "droga": "Haloxifop-R-metil éster", "precio": 30.0, "unidad": "US$/kg"},
-        {"tipo": "SEMILLA", "producto": "GESAGARD 50 FW", "droga": "Prometrina", "precio": 10.4, "unidad": "US$/litro"},
+        {"tipo": "SEMILLA", "producto": "GIRASOL HIBRIDO", "principio_activo": "Germoplasma híbrido", "precio": 200.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "GIRASOL HIBRIDO CL", "principio_activo": "Germoplasma híbrido resistente a imidazolinonas", "precio": 243.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "MAIZ VT3P", "principio_activo": "Germoplasma híbrido tecnología VT3Pro", "precio": 193.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "MAIZ Hibrido", "principio_activo": "Germoplasma híbrido", "precio": 147.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "MAIZ VIPTERA3", "principio_activo": "Germoplasma híbrido tecnología Viptera", "precio": 175.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "MAIZ MG/RR2", "principio_activo": "Germoplasma híbrido con tecnología MG/RR2", "precio": 175.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "MAIZ MG CL", "principio_activo": "Germoplasma híbrido con tecnología MG CL", "precio": 162.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "SOJA RR", "principio_activo": "Germoplasma con tecnología RR", "precio": 0.72, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "SORGO GRAN.HIBR.", "principio_activo": "Germoplasma híbrido granífero", "precio": 8.30, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "SORGO GRAN. IG", "principio_activo": "Germoplasma granífero IG", "precio": 9.40, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "TRIGO FISCALIZADO", "principio_activo": "Germoplasma fiscalizado", "precio": 0.46, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "GALANT HL", "principio_activo": "Haloxifop-R-metil éster", "precio": 22.0, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "GALANT RLPU", "principio_activo": "Haloxifop-R-metil éster", "precio": 10.0, "unidad": "US$/bolsa"},
+        {"tipo": "SEMILLA", "producto": "GALANT MAX", "principio_activo": "Haloxifop-R-metil éster", "precio": 43.0, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "GEMMIT TOP", "principio_activo": "Haloxifop-R-metil éster", "precio": 30.0, "unidad": "US$/kg"},
+        {"tipo": "SEMILLA", "producto": "GESAGARD 50 FW", "principio_activo": "Prometrina", "precio": 10.4, "unidad": "US$/litro"},
     ]
     
     # Herbicidas
     herbicidas = [
-        {"tipo": "HERBICIDA", "producto": "2,4-D etilhexilico 97%", "droga": "Ácido 2,4-diclorofenoxiacético", "precio": 6.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "2,4 D AMINA 50%", "droga": "Ácido 2,4-diclorofenoxiacético", "precio": 4.3, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "2,4 DB 100%", "droga": "Ácido 4-(2,4-diclorofenoxi)butírico", "precio": 13.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "2,4D PLUS", "droga": "Ácido 2,4-diclorofenoxiacético plus", "precio": 4.5, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ACETOCLOR c/antídoto", "droga": "Acetoclor con antídoto", "precio": 8.2, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ACURON UNO", "droga": "Mezcla de herbicidas", "precio": 39.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ADENGO", "droga": "Tiencarbazon-metil + Isoxaflutole", "precio": 103.8, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ATECTRA BV", "droga": "Dicamba", "precio": 12.6, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ATRAZINA 50", "droga": "Atrazina", "precio": 5.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ATRAZINA 90 WG", "droga": "Atrazina", "precio": 8.5, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "AUTHORITY", "droga": "Sulfentrazone", "precio": 23.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "AXIAL PLUS", "droga": "Pinoxaden", "precio": 45.5, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "BANVEL", "droga": "Dicamba", "precio": 11.1, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "BASAGRAN 60", "droga": "Bentazon", "precio": 28.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "BICEP-PACK GOLD", "droga": "S-metolacloro + Atrazina", "precio": 124.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "BRODAL", "droga": "Diflufenican", "precio": 34.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "BROMOTRIL", "droga": "Bromoxinil", "precio": 20.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "CLEARSOL DF p/12 has", "droga": "Imazapir", "precio": 150.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "CONVEY", "droga": "Flumetsulam + Diclosulam", "precio": 330.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "DASEN", "droga": "Herbicida post-emergente", "precio": 40.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "DINAMIC 70 WG", "droga": "Amicarbazone", "precio": 37.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "DUAL GOLD", "droga": "S-metolacloro", "precio": 7.7, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "EGEMON", "droga": "Mezcla de herbicidas", "precio": 11.5, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ELEVORE", "droga": "Halauxifen-metil", "precio": 175.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "EQUIP WG pack p/ 5 ha", "droga": "Foramsulfuron + Iodosulfuron", "precio": 228.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "ENLIST", "droga": "2,4-D colina", "precio": 6.00, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "FINESSE", "droga": "Clorsulfuron + Metsulfuron", "precio": 330.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "FLOSIL", "droga": "Fluroxipir", "precio": 10.1, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "FLUROCLORIDONA 25%", "droga": "Flurocloridona", "precio": 18.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "GLIFOSATO 54%", "droga": "N-(fosfonometil)glicina", "precio": 4.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "GLIFOMAX GS", "droga": "N-(fosfonometil)glicina", "precio": 5.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "GLIFOPAMPA", "droga": "N-(fosfonometil)glicina", "precio": 3.8, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "GLIFO TOP", "droga": "N-(fosfonometil)glicina", "precio": 6.1, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "GUARDIAN", "droga": "Acetoclor", "precio": 7.4, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "HARNESS", "droga": "Acetoclor", "precio": 7.1, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "HEAT", "droga": "Saflufenacil", "precio": 325.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "HUSSAR OD PLUS", "droga": "Iodosulfuron + Mefenpir", "precio": 366.2, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "INTERFIELD p/5 has", "droga": "Imazetapir + Imazapir", "precio": 108.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "KATRIN (p/10 has)", "droga": "Cletodim", "precio": 98.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "LAUDIS", "droga": "Tembotrione", "precio": 122.2, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "LIGATE", "droga": "Rimsulfuron + Tifensulfuron", "precio": 195.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "LONTREL", "droga": "Clopiralid", "precio": 37.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "M.C.P.A. 25%", "droga": "MCPA", "precio": 4.80, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "MERIT WG pack p/ 66 ha", "droga": "Metsulfuron-metil", "precio": 1230, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "METSULFURON METIL 60%", "droga": "Metsulfuron-metil", "precio": 39.00, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "PACTO", "droga": "Flumioxazin", "precio": 390.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "PARAQUAT", "droga": "Paraquat", "precio": 2.8, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "PEAK PACK L (p/20 has)", "droga": "Prosulfuron + Dicamba", "precio": 132.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "PIVOT H", "droga": "Imazetapir", "precio": 6.2, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "PRESIDE", "droga": "Flumetsulam", "precio": 29.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "PRODIGIO 60", "droga": "Mezcla de herbicidas", "precio": 28.1, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "PUMA EXTRA", "droga": "Fenoxaprop-etil", "precio": 27.2, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ROUNDUP FG", "droga": "Glifosato", "precio": 7.6, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ROUNDUP FULL II", "droga": "Glifosato", "precio": 6.1, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "ROUNDUP CONTROLMAX", "droga": "Glifosato", "precio": 7.73, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "SELECT", "droga": "Cletodim", "precio": 6.40, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "SENCOREX X10", "droga": "Metribuzin", "precio": 20.4, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "SPIDER", "droga": "Diclosulam", "precio": 275.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "STAGGER", "droga": "Cletodim", "precio": 46.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "STARANE XTRA", "droga": "Fluroxipir", "precio": 26.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "SULFOSATO Touchdown", "droga": "Glifosato", "precio": 4.3, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "TEXARO", "droga": "Diclosulam + Halauxifen", "precio": 385.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "TITUS 25 WG", "droga": "Rimsulfuron", "precio": 230.0, "unidad": "US$/kg"},
-        {"tipo": "HERBICIDA", "producto": "TOP GROUND (p/20 has)", "droga": "Picloram + Fluroxipir", "precio": 340.0, "unidad": "US$/pack"},
-        {"tipo": "HERBICIDA", "producto": "TORDON 24 K", "droga": "Picloram", "precio": 10.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "TRIFLURALINA-premerge", "droga": "Trifluralina", "precio": 16.5, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "UP STAGE EC 50", "droga": "Metazaclor", "precio": 17.0, "unidad": "US$/litro"},
-        {"tipo": "HERBICIDA", "producto": "YAMATO TOP", "droga": "Mezcla de herbicidas", "precio": 94.0, "unidad": "US$/litro"}
+        {"tipo": "HERBICIDA", "producto": "2,4-D etilhexilico 97%", "principio_activo": "Ácido 2,4-diclorofenoxiacético", "precio": 6.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "2,4 D AMINA 50%", "principio_activo": "Ácido 2,4-diclorofenoxiacético", "precio": 4.3, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "2,4 DB 100%", "principio_activo": "Ácido 4-(2,4-diclorofenoxi)butírico", "precio": 13.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "2,4D PLUS", "principio_activo": "Ácido 2,4-diclorofenoxiacético plus", "precio": 4.5, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ACETOCLOR c/antídoto", "principio_activo": "Acetoclor con antídoto", "precio": 8.2, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ACURON UNO", "principio_activo": "Mezcla de herbicidas", "precio": 39.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ADENGO", "principio_activo": "Tiencarbazon-metil + Isoxaflutole", "precio": 103.8, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ATECTRA BV", "principio_activo": "Dicamba", "precio": 12.6, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ATRAZINA 50", "principio_activo": "Atrazina", "precio": 5.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ATRAZINA 90 WG", "principio_activo": "Atrazina", "precio": 8.5, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "AUTHORITY", "principio_activo": "Sulfentrazone", "precio": 23.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "AXIAL PLUS", "principio_activo": "Pinoxaden", "precio": 45.5, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "BANVEL", "principio_activo": "Dicamba", "precio": 11.1, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "BASAGRAN 60", "principio_activo": "Bentazon", "precio": 28.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "BICEP-PACK GOLD", "principio_activo": "S-metolacloro + Atrazina", "precio": 124.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "BRODAL", "principio_activo": "Diflufenican", "precio": 34.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "BROMOTRIL", "principio_activo": "Bromoxinil", "precio": 20.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "CLEARSOL DF p/12 has", "principio_activo": "Imazapir", "precio": 150.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "CONVEY", "principio_activo": "Flumetsulam + Diclosulam", "precio": 330.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "DASEN", "principio_activo": "Herbicida post-emergente", "precio": 40.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "DINAMIC 70 WG", "principio_activo": "Amicarbazone", "precio": 37.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "DUAL GOLD", "principio_activo": "S-metolacloro", "precio": 7.7, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "EGEMON", "principio_activo": "Mezcla de herbicidas", "precio": 11.5, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ELEVORE", "principio_activo": "Halauxifen-metil", "precio": 175.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "EQUIP WG pack p/ 5 ha", "principio_activo": "Foramsulfuron + Iodosulfuron", "precio": 228.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "ENLIST", "principio_activo": "2,4-D colina", "precio": 6.00, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "FINESSE", "principio_activo": "Clorsulfuron + Metsulfuron", "precio": 330.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "FLOSIL", "principio_activo": "Fluroxipir", "precio": 10.1, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "FLUROCLORIDONA 25%", "principio_activo": "Flurocloridona", "precio": 18.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "GLIFOSATO 54%", "principio_activo": "N-(fosfonometil)glicina", "precio": 4.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "GLIFOMAX GS", "principio_activo": "N-(fosfonometil)glicina", "precio": 5.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "GLIFOPAMPA", "principio_activo": "N-(fosfonometil)glicina", "precio": 3.8, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "GLIFO TOP", "principio_activo": "N-(fosfonometil)glicina", "precio": 6.1, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "GUARDIAN", "principio_activo": "Acetoclor", "precio": 7.4, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "HARNESS", "principio_activo": "Acetoclor", "precio": 7.1, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "HEAT", "principio_activo": "Saflufenacil", "precio": 325.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "HUSSAR OD PLUS", "principio_activo": "Iodosulfuron + Mefenpir", "precio": 366.2, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "INTERFIELD p/5 has", "principio_activo": "Imazetapir + Imazapir", "precio": 108.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "KATRIN (p/10 has)", "principio_activo": "Cletodim", "precio": 98.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "LAUDIS", "principio_activo": "Tembotrione", "precio": 122.2, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "LIGATE", "principio_activo": "Rimsulfuron + Tifensulfuron", "precio": 195.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "LONTREL", "principio_activo": "Clopiralid", "precio": 37.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "M.C.P.A. 25%", "principio_activo": "MCPA", "precio": 4.80, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "MERIT WG pack p/ 66 ha", "principio_activo": "Metsulfuron-metil", "precio": 1230, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "METSULFURON METIL 60%", "principio_activo": "Metsulfuron-metil", "precio": 39.00, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "PACTO", "principio_activo": "Flumioxazin", "precio": 390.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "PARAQUAT", "principio_activo": "Paraquat", "precio": 2.8, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "PEAK PACK L (p/20 has)", "principio_activo": "Prosulfuron + Dicamba", "precio": 132.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "PIVOT H", "principio_activo": "Imazetapir", "precio": 6.2, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "PRESIDE", "principio_activo": "Flumetsulam", "precio": 29.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "PRODIGIO 60", "principio_activo": "Mezcla de herbicidas", "precio": 28.1, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "PUMA EXTRA", "principio_activo": "Fenoxaprop-etil", "precio": 27.2, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ROUNDUP FG", "principio_activo": "Glifosato", "precio": 7.6, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ROUNDUP FULL II", "principio_activo": "Glifosato", "precio": 6.1, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "ROUNDUP CONTROLMAX", "principio_activo": "Glifosato", "precio": 7.73, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "SELECT", "principio_activo": "Cletodim", "precio": 6.40, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "SENCOREX X10", "principio_activo": "Metribuzin", "precio": 20.4, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "SPIDER", "principio_activo": "Diclosulam", "precio": 275.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "STAGGER", "principio_activo": "Cletodim", "precio": 46.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "STARANE XTRA", "principio_activo": "Fluroxipir", "precio": 26.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "SULFOSATO Touchdown", "principio_activo": "Glifosato", "precio": 4.3, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "TEXARO", "principio_activo": "Diclosulam + Halauxifen", "precio": 385.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "TITUS 25 WG", "principio_activo": "Rimsulfuron", "precio": 230.0, "unidad": "US$/kg"},
+        {"tipo": "HERBICIDA", "producto": "TOP GROUND (p/20 has)", "principio_activo": "Picloram + Fluroxipir", "precio": 340.0, "unidad": "US$/pack"},
+        {"tipo": "HERBICIDA", "producto": "TORDON 24 K", "principio_activo": "Picloram", "precio": 10.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "TRIFLURALINA-premerge", "principio_activo": "Trifluralina", "precio": 16.5, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "UP STAGE EC 50", "principio_activo": "Metazaclor", "precio": 17.0, "unidad": "US$/litro"},
+        {"tipo": "HERBICIDA", "producto": "YAMATO TOP", "principio_activo": "Mezcla de herbicidas", "precio": 94.0, "unidad": "US$/litro"}
     ]
     
     # Insecticidas
     insecticidas = [
-        {"tipo": "INSECTICIDA", "producto": "ABAMECTINA 3,6%", "droga": "Abamectina", "precio": 12.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "ACEFATO 97%", "droga": "Acefato", "precio": 19.5, "unidad": "US$/kg"},
-        {"tipo": "INSECTICIDA", "producto": "ALSYSTIN 48 SC", "droga": "Triflumuron", "precio": 86.3, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "AMPLIGO", "droga": "Clorantraniliprole + Lambda-cialotrina", "precio": 101.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CLAP SC", "droga": "Insecticida biológico", "precio": np.nan, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CORAGEN", "droga": "Clorantraniliprole", "precio": 150.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CURYOM FIT UV", "droga": "Lufenuron + Profenofos", "precio": 173.3, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "CIPERMETRINA 25%", "droga": "Cipermetrina", "precio": 7.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DECIS 5%", "droga": "Deltametrina", "precio": 5.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DECIS FLOW", "droga": "Deltametrina", "precio": 94.6, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DECIS FORTE 10%", "droga": "Deltametrina", "precio": 34.4, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "DIPEL DF", "droga": "Bacillus thuringiensis", "precio": 43.0, "unidad": "US$/kg"},
-        {"tipo": "INSECTICIDA", "producto": "ENGEO", "droga": "Tiametoxam + Lambda-cialotrina", "precio": 25.4, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "EXALT SC", "droga": "Spinetoram", "precio": 248.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "EXPEDITION", "droga": "Acetamiprid + Bifentrin", "precio": 39.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "FASTAC DUO", "droga": "Alfa-cipermetrina + Acetamiprid", "precio": 25.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "FIGHTER PLUS", "droga": "Imidacloprid + Beta-ciflutrina", "precio": 83.5, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "INTREPID", "droga": "Metoxifenocide", "precio": 38.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "KARATE ZEON 25%", "droga": "Lambda-cialotrina", "precio": 44.6, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "SOLOMON", "droga": "Imidacloprid", "precio": 29.1, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "STARKLE (5,1 kg)", "droga": "Dinotefuran", "precio": 710, "unidad": "US$/pack"},
-        {"tipo": "INSECTICIDA", "producto": "TRACER", "droga": "Spinosad", "precio": 254.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "PHIL LAMBDA 5%", "droga": "Lambda-cialotrina", "precio": 7.8, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "QUINTAL XTRA", "droga": "Clorpirifos + Cipermetrina", "precio": 83.0, "unidad": "US$/litro"},
-        {"tipo": "INSECTICIDA", "producto": "TRANSFORM", "droga": "Sulfoxaflor", "precio": 234.5, "unidad": "US$/litro"}
+        {"tipo": "INSECTICIDA", "producto": "ABAMECTINA 3,6%", "principio_activo": "Abamectina", "precio": 12.5, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "ACEFATO 97%", "principio_activo": "Acefato", "precio": 19.5, "unidad": "US$/kg"},
+        {"tipo": "INSECTICIDA", "producto": "ALSYSTIN 48 SC", "principio_activo": "Triflumuron", "precio": 86.3, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "AMPLIGO", "principio_activo": "Clorantraniliprole + Lambda-cialotrina", "precio": 101.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "CLAP SC", "principio_activo": "Insecticida biológico", "precio": np.nan, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "CORAGEN", "principio_activo": "Clorantraniliprole", "precio": 150.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "CURYOM FIT UV", "principio_activo": "Lufenuron + Profenofos", "precio": 173.3, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "CIPERMETRINA 25%", "principio_activo": "Cipermetrina", "precio": 7.5, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "DECIS 5%", "principio_activo": "Deltametrina", "precio": 5.5, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "DECIS FLOW", "principio_activo": "Deltametrina", "precio": 94.6, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "DECIS FORTE 10%", "principio_activo": "Deltametrina", "precio": 34.4, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "DIPEL DF", "principio_activo": "Bacillus thuringiensis", "precio": 43.0, "unidad": "US$/kg"},
+        {"tipo": "INSECTICIDA", "producto": "ENGEO", "principio_activo": "Tiametoxam + Lambda-cialotrina", "precio": 25.4, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "EXALT SC", "principio_activo": "Spinetoram", "precio": 248.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "EXPEDITION", "principio_activo": "Acetamiprid + Bifentrin", "precio": 39.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "FASTAC DUO", "principio_activo": "Alfa-cipermetrina + Acetamiprid", "precio": 25.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "FIGHTER PLUS", "principio_activo": "Imidacloprid + Beta-ciflutrina", "precio": 83.5, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "INTREPID", "principio_activo": "Metoxifenocide", "precio": 38.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "KARATE ZEON 25%", "principio_activo": "Lambda-cialotrina", "precio": 44.6, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "SOLOMON", "principio_activo": "Imidacloprid", "precio": 29.1, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "STARKLE (5,1 kg)", "principio_activo": "Dinotefuran", "precio": 710, "unidad": "US$/pack"},
+        {"tipo": "INSECTICIDA", "producto": "TRACER", "principio_activo": "Spinosad", "precio": 254.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "PHIL LAMBDA 5%", "principio_activo": "Lambda-cialotrina", "precio": 7.8, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "QUINTAL XTRA", "principio_activo": "Clorpirifos + Cipermetrina", "precio": 83.0, "unidad": "US$/litro"},
+        {"tipo": "INSECTICIDA", "producto": "TRANSFORM", "principio_activo": "Sulfoxaflor", "precio": 234.5, "unidad": "US$/litro"}
     ]
     
     # Fungicidas
     fungicidas = [
-        {"tipo": "FUNGICIDA", "producto": "ALLEGRO", "droga": "Kresoxim-metil", "precio": 26.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "AMISTAR XTRA", "droga": "Azoxistrobina + Ciproconazol", "precio": 24.9, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "ARACONAZOLE 43%", "droga": "Tebuconazole", "precio": 11.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CARBENDAZIM 50%", "droga": "Carbendazim", "precio": 6.8, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CINCHA", "droga": "Difenoconazole", "precio": 15.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "COMET", "droga": "Piraclostrobina", "precio": 60.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CRIPTON", "droga": "Trifloxistrobina + Protioconazole", "precio": 32.01, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "CRIPTON XPRO", "droga": "Trifloxistrobina + Protioconazole + Bixafen", "precio": 54.32, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "MANCOZEB", "droga": "Mancozeb", "precio": 6.0, "unidad": "US$/kg"},
-        {"tipo": "FUNGICIDA", "producto": "NATIVO SC 300", "droga": "Trifloxistrobina + Tebuconazole", "precio": np.nan, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "OPERA", "droga": "Piraclostrobina + Epoxiconazole", "precio": 23.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "ORQUESTA ULTRA", "droga": "Piraclostrobina + Epoxiconazole + Fluxapyroxad", "precio": 32.0, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "REFLECT XTRA", "droga": "Isopyrazam + Azoxistrobina", "precio": np.nan, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "SPHERE MAX", "droga": "Trifloxistrobina + Ciproconazol", "precio": 55.3, "unidad": "US$/litro"},
-        {"tipo": "FUNGICIDA", "producto": "STINGER", "droga": "Azoxistrobina + Difenoconazole", "precio": 26.0, "unidad": "US$/litro"}
+        {"tipo": "FUNGICIDA", "producto": "ALLEGRO", "principio_activo": "Kresoxim-metil", "precio": 26.0, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "AMISTAR XTRA", "principio_activo": "Azoxistrobina + Ciproconazol", "precio": 24.9, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "ARACONAZOLE 43%", "principio_activo": "Tebuconazole", "precio": 11.0, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "CARBENDAZIM 50%", "principio_activo": "Carbendazim", "precio": 6.8, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "CINCHA", "principio_activo": "Difenoconazole", "precio": 15.0, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "COMET", "principio_activo": "Piraclostrobina", "precio": 60.0, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "CRIPTON", "principio_activo": "Trifloxistrobina + Protioconazole", "precio": 32.01, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "CRIPTON XPRO", "principio_activo": "Trifloxistrobina + Protioconazole + Bixafen", "precio": 54.32, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "MANCOZEB", "principio_activo": "Mancozeb", "precio": 6.0, "unidad": "US$/kg"},
+        {"tipo": "FUNGICIDA", "producto": "NATIVO SC 300", "principio_activo": "Trifloxistrobina + Tebuconazole", "precio": np.nan, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "OPERA", "principio_activo": "Piraclostrobina + Epoxiconazole", "precio": 23.0, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "ORQUESTA ULTRA", "principio_activo": "Piraclostrobina + Epoxiconazole + Fluxapyroxad", "precio": 32.0, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "REFLECT XTRA", "principio_activo": "Isopyrazam + Azoxistrobina", "precio": np.nan, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "SPHERE MAX", "principio_activo": "Trifloxistrobina + Ciproconazol", "precio": 55.3, "unidad": "US$/litro"},
+        {"tipo": "FUNGICIDA", "producto": "STINGER", "principio_activo": "Azoxistrobina + Difenoconazole", "precio": 26.0, "unidad": "US$/litro"}
     ]
     
     # Fertilizantes
     fertilizantes = [
-        {"tipo": "FERTILIZANTE", "producto": "AZUFRE GRANULADO", "droga": "Azufre elemental", "precio": 230, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "CLORURO DE POTASIO", "droga": "KCl", "precio": 490, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "FOSZINC", "droga": "Fósforo + Zinc", "precio": 980, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "FOSFATO DIAMONICO", "droga": "DAP", "precio": 870, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "FOSF MONOAMONICO", "droga": "MAP", "precio": 880, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "MAP AZUFRADO", "droga": "MAP + S", "precio": 690, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "NITR de AMONIO CALC.", "droga": "CAN", "precio": 525, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SOLMIX N 28 - S 5,2", "droga": "Solución nitrogenada con azufre", "precio": 455, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SOLMIX Zn (27-5-04 Zn)", "droga": "Solución con zinc", "precio": 490, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SULFATO de AMONIO", "droga": "Sulfato de amonio", "precio": 450, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SULFATO de CALCIO", "droga": "Sulfato de calcio", "precio": 326, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SUPERFOSF. SIMPLE", "droga": "Superfosfato simple", "precio": 390, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "SUPERFOSF. TRIPLE", "droga": "Superfosfato triple", "precio": 700, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "U.A.N. 32", "droga": "Solución UAN", "precio": 490, "unidad": "US$/tn"},
-        {"tipo": "FERTILIZANTE", "producto": "UREA GRANULADA", "droga": "CO(NH₂)₂", "precio": 560, "unidad": "US$/tn"}
+        {"tipo": "FERTILIZANTE", "producto": "AZUFRE GRANULADO", "principio_activo": "Azufre elemental", "precio": 230, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "CLORURO DE POTASIO", "principio_activo": "KCl", "precio": 490, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "FOSZINC", "principio_activo": "Fósforo + Zinc", "precio": 980, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "FOSFATO DIAMONICO", "principio_activo": "DAP", "precio": 870, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "FOSF MONOAMONICO", "principio_activo": "MAP", "precio": 880, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "MAP AZUFRADO", "principio_activo": "MAP + S", "precio": 690, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "NITR de AMONIO CALC.", "principio_activo": "CAN", "precio": 525, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "SOLMIX N 28 - S 5,2", "principio_activo": "Solución nitrogenada con azufre", "precio": 455, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "SOLMIX Zn (27-5-04 Zn)", "principio_activo": "Solución con zinc", "precio": 490, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "SULFATO de AMONIO", "principio_activo": "Sulfato de amonio", "precio": 450, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "SULFATO de CALCIO", "principio_activo": "Sulfato de calcio", "precio": 326, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "SUPERFOSF. SIMPLE", "principio_activo": "Superfosfato simple", "precio": 390, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "SUPERFOSF. TRIPLE", "principio_activo": "Superfosfato triple", "precio": 700, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "U.A.N. 32", "principio_activo": "Solución UAN", "precio": 490, "unidad": "US$/tn"},
+        {"tipo": "FERTILIZANTE", "producto": "UREA GRANULADA", "principio_activo": "CO(NH₂)₂", "precio": 560, "unidad": "US$/tn"}
     ]
     
     # Curasemillas
     curasemillas = [
-        {"tipo": "CURASEMILLA", "producto": "ACRONIS 2,5 lt", "droga": "Tiram + Carbendazim", "precio": 48.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CHUCARO", "droga": "Tiametoxam + Tebuconazole + Fludioxonil", "precio": 94.1, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Liquid Soja", "droga": "Inoculante biológico", "precio": 3.5, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Rizoflo Premium Soj", "droga": "Inoculante premium", "precio": 3.6, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Pack Sistémico", "droga": "Inoculante + fungicida", "precio": 4.5, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CKC Pack Soja Premium", "droga": "Inoculante premium", "precio": 7.5, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CONFIDOR 70 WG", "droga": "Imidacloprid", "precio": 56.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CREATE PACK FAST", "droga": "Clothianidin + Ciantraniliprole", "precio": 129.50, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "CRUISER PACK", "droga": "Tiametoxam + Fludioxonil + Metalaxil-M", "precio": 442.1, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "DIVIDEND", "droga": "Difenoconazole + Metalaxil-M", "precio": 11.1, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "DIVIDEND EXTRA", "droga": "Difenoconazole + Metalaxil-M + Sedaxane", "precio": 18.6, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "NITRAGIN CELL TECH ds", "droga": "Bradyrhizobium japonicum", "precio": 2.40, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "NITRAPACK", "droga": "Inoculante + protector", "precio": 3.7, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "PREMIS", "droga": "Triticonazole", "precio": 48.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "PUCARA", "droga": "Tiametoxam + Lambda-cialotrina", "precio": 107.67, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "SCENIC", "droga": "Fluoxastrobin + Protioconazole + Tebuconazole", "precio": 32.98, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "SISTIVA (p/4000 kg)", "droga": "Fluxapyroxad", "precio": 330.00, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "SUMI-EIGHT MT", "droga": "Diniconazole-M + Thiram", "precio": 29.0, "unidad": "US$/dosis"},
-        {"tipo": "CURASEMILLA", "producto": "VIBRANCE INTEGRAL", "droga": "Sedaxane + Difenoconazole + Metalaxil-M + Fludioxonil", "precio": 64.30, "unidad": "US$/dosis"}
+        {"tipo": "CURASEMILLA", "producto": "ACRONIS 2,5 lt", "principio_activo": "Tiram + Carbendazim", "precio": 48.0, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CHUCARO", "principio_activo": "Tiametoxam + Tebuconazole + Fludioxonil", "precio": 94.1, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CKC Liquid Soja", "principio_activo": "Inoculante biológico", "precio": 3.5, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CKC Rizoflo Premium Soj", "principio_activo": "Inoculante premium", "precio": 3.6, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CKC Pack Sistémico", "principio_activo": "Inoculante + fungicida", "precio": 4.5, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CKC Pack Soja Premium", "principio_activo": "Inoculante premium", "precio": 7.5, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CONFIDOR 70 WG", "principio_activo": "Imidacloprid", "precio": 56.0, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CREATE PACK FAST", "principio_activo": "Clothianidin + Ciantraniliprole", "precio": 129.50, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "CRUISER PACK", "principio_activo": "Tiametoxam + Fludioxonil + Metalaxil-M", "precio": 442.1, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "DIVIDEND", "principio_activo": "Difenoconazole + Metalaxil-M", "precio": 11.1, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "DIVIDEND EXTRA", "principio_activo": "Difenoconazole + Metalaxil-M + Sedaxane", "precio": 18.6, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "NITRAGIN CELL TECH ds", "principio_activo": "Bradyrhizobium japonicum", "precio": 2.40, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "NITRAPACK", "principio_activo": "Inoculante + protector", "precio": 3.7, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "PREMIS", "principio_activo": "Triticonazole", "precio": 48.0, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "PUCARA", "principio_activo": "Tiametoxam + Lambda-cialotrina", "precio": 107.67, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "SCENIC", "principio_activo": "Fluoxastrobin + Protioconazole + Tebuconazole", "precio": 32.98, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "SISTIVA (p/4000 kg)", "principio_activo": "Fluxapyroxad", "precio": 330.00, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "SUMI-EIGHT MT", "principio_activo": "Diniconazole-M + Thiram", "precio": 29.0, "unidad": "US$/dosis"},
+        {"tipo": "CURASEMILLA", "producto": "VIBRANCE INTEGRAL", "principio_activo": "Sedaxane + Difenoconazole + Metalaxil-M + Fludioxonil", "precio": 64.30, "unidad": "US$/dosis"}
     ]
     
     # Aceites y coadyuvantes
     aceites = [
-        {"tipo": "ACEITE", "producto": "ACEITE METILADO", "droga": "Éster metílico de ácidos grasos", "precio": 3.0, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "AJUSTE", "droga": "Aceite mineral parafinado", "precio": 45.0, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "DASH MSO MAX", "droga": "Éster metílico de aceite de soja", "precio": 16.0, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "RIZOSPRAY EXTREMO", "droga": "Tensioactivo siliconado", "precio": 18.5, "unidad": "US$/litro"},
-        {"tipo": "ACEITE", "producto": "SULFATO de AMONIO lq", "droga": "Sulfato de amonio líquido", "precio": 1.3, "unidad": "US$/litro"}
+        {"tipo": "ACEITE", "producto": "ACEITE METILADO", "principio_activo": "Éster metílico de ácidos grasos", "precio": 3.0, "unidad": "US$/litro"},
+        {"tipo": "ACEITE", "producto": "AJUSTE", "principio_activo": "Aceite mineral parafinado", "precio": 45.0, "unidad": "US$/litro"},
+        {"tipo": "ACEITE", "producto": "DASH MSO MAX", "principio_activo": "Éster metílico de aceite de soja", "precio": 16.0, "unidad": "US$/litro"},
+        {"tipo": "ACEITE", "producto": "RIZOSPRAY EXTREMO", "principio_activo": "Tensioactivo siliconado", "precio": 18.5, "unidad": "US$/litro"},
+        {"tipo": "ACEITE", "producto": "SULFATO de AMONIO lq", "principio_activo": "Sulfato de amonio líquido", "precio": 1.3, "unidad": "US$/litro"}
     ]
     
     # Combinar todos los productos
@@ -228,39 +228,92 @@ def filtrar_por_tipo(df, tipo):
         return df
     return df[df['tipo'] == tipo]
 
-# Función para normalizar texto para búsqueda
+# Función para normalizar texto para búsqueda (mejorada)
 def normalizar_texto(texto):
     import unicodedata
     import re
     if isinstance(texto, str):
+        # Convertir a minúsculas
         texto = texto.lower()
+        # Eliminar acentos
         texto = unicodedata.normalize('NFD', texto).encode('ascii', 'ignore').decode('utf-8')
-        texto = re.sub(r'[^a-z0-9]', '', texto)
+        # Eliminar caracteres especiales pero mantener espacios para búsquedas más flexibles
+        texto = re.sub(r'[^a-z0-9\s]', '', texto)
+        # Reemplazar múltiples espacios por uno solo
+        texto = re.sub(r'\s+', ' ', texto).strip()
+        # Manejar casos especiales como 2,4-D, 24D, etc.
+        texto = texto.replace("24d", "24 d").replace("24 d", "2 4 d")
     return texto
 
-# Función para buscar productos
-def buscar_productos(df, busqueda):
+# Función mejorada para buscar productos
+def buscar_productos_flexible(df, busqueda):
     if not busqueda:
         return None
     
     # Normalizar la búsqueda
     busqueda_norm = normalizar_texto(busqueda)
+    busqueda_tokens = set(busqueda_norm.split())
     
     # Normalizar las columnas del DataFrame para la búsqueda
     df['producto_norm'] = df['producto'].apply(normalizar_texto)
-    df['droga_norm'] = df['droga'].apply(lambda x: normalizar_texto(x) if pd.notna(x) else '')
+    df['principio_activo_norm'] = df['principio_activo'].apply(lambda x: normalizar_texto(x) if pd.notna(x) else '')
     
-    # Buscar coincidencia exacta primero
-    resultado = df[(df['producto_norm'] == busqueda_norm) | (df['droga_norm'] == busqueda_norm)]
+    # Calcular puntuación de coincidencia
+    def calcular_puntuacion(row):
+        puntuacion = 0
+        
+        # Coincidencia exacta con producto
+        if row['producto_norm'] == busqueda_norm:
+            puntuacion += 100
+        # Coincidencia exacta con principio activo
+        if row['principio_activo_norm'] == busqueda_norm:
+            puntuacion += 90
+        
+        # Producto contiene la búsqueda
+        if busqueda_norm in row['producto_norm']:
+            puntuacion += 80
+        # Principio activo contiene la búsqueda
+        if busqueda_norm in row['principio_activo_norm']:
+            puntuacion += 70
+            
+        # Buscar tokens individuales
+        for token in busqueda_tokens:
+            if token in row['producto_norm'].split():
+                puntuacion += 15
+            if token in row['principio_activo_norm'].split():
+                puntuacion += 10
+            if token in row['producto_norm']:
+                puntuacion += 5
+            if token in row['principio_activo_norm']:
+                puntuacion += 5
+        
+        return puntuacion
     
-    # Si no hay resultado exacto, buscar parcial
-    if resultado.empty:
-        resultado = df[df['producto_norm'].str.contains(busqueda_norm) | df['droga_norm'].str.contains(busqueda_norm)]
+    # Aplicar puntuación a cada fila
+    df['puntuacion'] = df.apply(calcular_puntuacion, axis=1)
+    
+    # Filtrar productos con puntuación mayor a 0 y ordenar por puntuación
+    resultado = df[df['puntuacion'] > 0].sort_values('puntuacion', ascending=False)
     
     # Limpiar columnas temporales
-    df.drop(['producto_norm', 'droga_norm'], axis=1, inplace=True)
+    df.drop(['producto_norm', 'principio_activo_norm', 'puntuacion'], axis=1, inplace=True)
     
     return resultado if not resultado.empty else None
+
+# Función para obtener sugerencias en tiempo real
+def obtener_sugerencias(df, texto, max_sugerencias=5):
+    if not texto or len(texto) < 2:
+        return []
+    
+    resultados = buscar_productos_flexible(df, texto)
+    
+    if resultados is None:
+        return []
+    
+    # Obtener las sugerencias (top N)
+    sugerencias = resultados.head(max_sugerencias)[['id', 'tipo', 'producto', 'principio_activo']]
+    
+    return sugerencias
 
 # Función principal
 def main():
@@ -278,25 +331,59 @@ def main():
     with tab1:
         st.header("Consulta de Precios")
         
-        # Campo de búsqueda
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            busqueda = st.text_input("Buscar producto o droga...")
-        with col2:
-            buscar = st.button("Buscar", type="primary")
+        # Campo de búsqueda con sugerencias en tiempo real
+        busqueda = st.text_input("Buscar producto o principio activo...", key="busqueda")
         
-        if buscar or busqueda:
-            resultado = buscar_productos(df, busqueda)
+        # Mostrar sugerencias en tiempo real
+        if busqueda:
+            sugerencias = obtener_sugerencias(df, busqueda)
+            
+            if not sugerencias.empty:
+                st.write("Sugerencias:")
+                for i, sugerencia in sugerencias.iterrows():
+                    if st.button(f"{sugerencia['producto']} ({sugerencia['tipo']})", key=f"sug_{sugerencia['id']}"):
+                        # Al hacer clic en una sugerencia, actualizar la búsqueda y realizar búsqueda
+                        st.session_state.producto_seleccionado = sugerencia['id']
+                        st.experimental_rerun()
+                
+                # Mostrar línea separadora
+                st.markdown("---")
+        
+        # Procesar selección de producto 
+        if 'producto_seleccionado' in st.session_state:
+            producto = df[df['id'] == st.session_state.producto_seleccionado].iloc[0]
+            
+            # Mostrar información del producto seleccionado
+            st.success(f"Producto seleccionado: {producto['producto']}")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write(f"**Tipo:** {producto['tipo']}")
+                st.write(f"**Principio activo:** {producto['principio_activo']}")
+            
+            with col2:
+                precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
+                unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
+                st.write(f"**Precio:** {precio} {unidad}")
+                st.write(f"**Última actualización:** {producto['fecha']}")
+                
+            st.button("Borrar selección", on_click=lambda: st.session_state.pop('producto_seleccionado'))
+                
+        elif busqueda:
+            # Si no hay producto seleccionado pero hay una búsqueda, realizar búsqueda
+            resultado = buscar_productos_flexible(df, busqueda)
+            
             if resultado is not None and not resultado.empty:
+                # Mostrar el primer resultado
                 producto = resultado.iloc[0]
                 
                 # Mostrar información del producto encontrado
-                st.success(f"Producto encontrado: {producto['producto']}")
+                st.write(f"**Mejor coincidencia:** {producto['producto']}")
                 
                 col1, col2 = st.columns(2)
                 with col1:
                     st.write(f"**Tipo:** {producto['tipo']}")
-                    st.write(f"**Droga:** {producto['droga']}")
+                    st.write(f"**Principio activo:** {producto['principio_activo']}")
                 
                 with col2:
                     precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
@@ -306,10 +393,20 @@ def main():
                 
                 # Si hay más resultados, mostrarlos
                 if len(resultado) > 1:
-                    st.write("Otros productos similares:")
-                    st.dataframe(resultado[1:].drop(['id', 'fecha'], axis=1), hide_index=True)
-            else:
-                st.error("Producto no encontrado. Intente con otro término de búsqueda.")
+                    st.write("Otros productos coincidentes:")
+                    st.dataframe(
+                        resultado[1:].drop(['id', 'fecha'], axis=1), 
+                        column_config={
+                            "tipo": "Tipo",
+                            "producto": "Producto",
+                            "principio_activo": "Principio Activo",
+                            "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
+                            "unidad": "Unidad"
+                        },
+                        hide_index=True
+                    )
+            elif busqueda.strip():  # Solo mostrar error si hay texto en la búsqueda
+                st.warning("Producto no encontrado. Intente con otro término de búsqueda.")
     
     # Pestaña 2: Lista de Productos
     with tab2:
@@ -330,7 +427,7 @@ def main():
             column_config={
                 "tipo": "Tipo",
                 "producto": "Producto",
-                "droga": "Droga (Principio Activo)",
+                "principio_activo": "Principio Activo",
                 "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
                 "unidad": "Unidad",
                 "fecha": "Actualización"
@@ -353,7 +450,7 @@ def main():
                     sorted(df['tipo'].unique().tolist())
                 )
                 producto = st.text_input("Nombre del producto:", key="nuevo_producto")
-                droga = st.text_input("Droga (Principio activo):", key="nueva_droga")
+                principio_activo = st.text_input("Principio activo:", key="nuevo_principio_activo")
             
             with col2:
                 precio = st.number_input("Precio:", min_value=0.0, step=0.1, format="%.2f")
@@ -371,7 +468,7 @@ def main():
                         'id': nuevo_id,
                         'tipo': tipo,
                         'producto': producto,
-                        'droga': droga if droga else "No especificada",
+                        'principio_activo': principio_activo if principio_activo else "No especificado",
                         'precio': precio,
                         'unidad': unidad,
                         'fecha': datetime.now().strftime("%d/%m/%Y")
@@ -407,7 +504,7 @@ def main():
                     productos_tipo.drop(['id', 'tipo'], axis=1),
                     column_config={
                         "producto": "Producto",
-                        "droga": "Droga (Principio Activo)",
+                        "principio_activo": "Principio Activo",
                         "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
                         "unidad": "Unidad",
                         "fecha": "Actualización"
@@ -442,7 +539,7 @@ def main():
     st.divider()
     st.write("### Instrucciones de uso:")
     st.markdown("""
-    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto.
+    - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. Empieza a escribir para ver sugerencias.
     - En **Lista de Productos** puedes ver todos los productos y filtrarlos por tipo.
     - Usa **Agregar Producto** para incluir nuevos productos a tu lista.
     - En **Por Categoría** puedes ver los productos organizados por su tipo y análisis de precios.
