@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import numpy as np
+import streamlit.components.v1 as components
 
 # Configuración de la página
 st.set_page_config(
@@ -245,8 +246,8 @@ def normalizar_texto(texto):
         texto = texto.replace("24d", "24 d").replace("24 d", "2 4 d")
     return texto
 
-# Función para obtener opciones de búsqueda en tiempo real
-def obtener_opciones_busqueda(df, texto, max_opciones=10):
+# Función para obtener sugerencias para el dropdown estilo Google
+def obtener_sugerencias(df, texto, max_sugerencias=10):
     if not texto or len(texto) < 2:
         return []
     
@@ -257,7 +258,7 @@ def obtener_opciones_busqueda(df, texto, max_opciones=10):
     df['producto_norm'] = df['producto'].apply(normalizar_texto)
     df['principio_activo_norm'] = df['principio_activo'].apply(lambda x: normalizar_texto(x) if pd.notna(x) else '')
     
-    # Crear función para calcular puntuación de coincidencia
+    # Calcular puntuación para cada producto
     def calcular_puntuacion(row):
         puntuacion = 0
         
@@ -301,17 +302,19 @@ def obtener_opciones_busqueda(df, texto, max_opciones=10):
     # Limpiar columnas temporales
     df.drop(['producto_norm', 'principio_activo_norm', 'puntuacion'], axis=1, inplace=True)
     
-    # Devolver opciones para el select_box
     if resultados.empty:
         return []
     
-    # Crear las opciones con formato "PRODUCTO (TIPO) - Principio Activo"
-    opciones = []
-    for _, row in resultados.head(max_opciones).iterrows():
-        opcion_texto = f"{row['producto']} ({row['tipo']}) - {row['principio_activo']}"
-        opciones.append((row['id'], opcion_texto))
+    # Formato: sólo el nombre del producto (como en Google)
+    sugerencias = []
+    for _, row in resultados.head(max_sugerencias).iterrows():
+        sugerencias.append({
+            "id": int(row['id']),
+            "texto": row['producto'],
+            "tipo": row['tipo']
+        })
     
-    return opciones
+    return sugerencias
 
 # Función principal
 def main():
@@ -329,68 +332,122 @@ def main():
     with tab1:
         st.header("Consulta de Precios")
         
-        # Creamos un contenedor para la barra de búsqueda y el dropdown
-        search_container = st.container()
+        # Inicializar o actualizar variables de estado
+        if 'busqueda' not in st.session_state:
+            st.session_state.busqueda = ""
+        if 'sugerencias' not in st.session_state:
+            st.session_state.sugerencias = []
+        if 'mostrar_sugerencias' not in st.session_state:
+            st.session_state.mostrar_sugerencias = False
+        if 'producto_seleccionado' not in st.session_state:
+            st.session_state.producto_seleccionado = None
         
-        with search_container:
-            # Agregar un campo de texto para la búsqueda
-            texto_busqueda = st.text_input("Buscar producto o principio activo...", key="texto_busqueda")
+        # Función para actualizar búsqueda y sugerencias
+        def actualizar_busqueda():
+            busqueda = st.session_state.texto_busqueda
+            st.session_state.busqueda = busqueda
+            st.session_state.sugerencias = obtener_sugerencias(df, busqueda)
+            st.session_state.mostrar_sugerencias = bool(busqueda and st.session_state.sugerencias)
+            st.session_state.producto_seleccionado = None
+        
+        # Función para seleccionar un producto
+        def seleccionar_producto(id_producto):
+            st.session_state.producto_seleccionado = id_producto
+            producto = df[df['id'] == id_producto].iloc[0]
+            st.session_state.busqueda = producto['producto']
+            st.session_state.texto_busqueda = producto['producto']
+            st.session_state.mostrar_sugerencias = False
+        
+        # Crear el campo de búsqueda
+        st.text_input(
+            "Buscar producto o principio activo...",
+            key="texto_busqueda",
+            value=st.session_state.busqueda,
+            on_change=actualizar_busqueda
+        )
+        
+        # Crear componente HTML personalizado para el dropdown de sugerencias estilo Google
+        if st.session_state.mostrar_sugerencias:
+            sugerencias_html = """
+            <div style="margin-top: -5px; border: 1px solid #dfe1e5; border-radius: 0 0 24px 24px; background-color: white; box-shadow: 0 4px 6px rgba(32,33,36,.28); width: 100%;">
+            """
             
-            # Obtener opciones de autocompletado basadas en el texto de búsqueda
-            if texto_busqueda:
-                opciones = obtener_opciones_busqueda(df, texto_busqueda)
-                
-                if opciones:
-                    # Preparar las opciones para el selectbox
-                    ids = [id for id, _ in opciones]
-                    textos = [texto for _, texto in opciones]
-                    
-                    # Agregar opción "Seleccionar..." al principio
-                    ids.insert(0, -1)
-                    textos.insert(0, "Seleccionar un producto...")
-                    
-                    # Crear un selectbox con las opciones
-                    seleccion_index = st.selectbox(
-                        "Productos encontrados:",
-                        range(len(textos)),
-                        format_func=lambda i: textos[i]
-                    )
-                    
-                    # Si se seleccionó un producto (no la opción "Seleccionar...")
-                    if seleccion_index > 0:
-                        # Guardar el ID del producto seleccionado
-                        producto_id = ids[seleccion_index]
-                        
-                        # Obtener el producto del DataFrame
-                        producto = df[df['id'] == producto_id].iloc[0]
-                        
-                        # Mostrar información del producto
-                        st.success(f"Producto seleccionado: {producto['producto']}")
-                        
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.write(f"**Tipo:** {producto['tipo']}")
-                            st.write(f"**Principio activo:** {producto['principio_activo']}")
-                        
-                        with col2:
-                            precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
-                            unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
-                            st.write(f"**Precio:** {precio} {unidad}")
-                            st.write(f"**Última actualización:** {producto['fecha']}")
-                else:
-                    st.warning("No se encontraron productos que coincidan con tu búsqueda.")
+            for i, sugerencia in enumerate(st.session_state.sugerencias):
+                # Crear el HTML para cada sugerencia
+                sugerencias_html += f"""
+                <div onclick="handleSuggestionClick({sugerencia['id']})" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; font-size: 16px; color: #212121;">
+                    <span style="margin-right: 8px; color: #70757a;"><i class="fas fa-search" style="font-size: 14px;"></i></span>
+                    <span style="flex-grow: 1;">{sugerencia['texto']}</span>
+                    <span style="color: #70757a; font-size: 13px;">{sugerencia['tipo']}</span>
+                </div>
+                """
+                # Agregar separador entre sugerencias (excepto la última)
+                if i < len(st.session_state.sugerencias) - 1:
+                    sugerencias_html += '<div style="border-top: 1px solid #e8eaed; margin: 0 14px;"></div>'
+            
+            sugerencias_html += """
+            </div>
+            <script>
+            function handleSuggestionClick(id) {
+                // Enviar mensaje al componente Streamlit
+                window.parent.postMessage({
+                    type: "streamlit:setComponentValue",
+                    value: id
+                }, "*");
+            }
+            </script>
+            """
+            
+            # Agregar estilos de Font Awesome para los iconos
+            sugerencias_html = """
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+            """ + sugerencias_html
+            
+            # Renderizar el componente HTML
+            sugerencias_component = components.html(sugerencias_html, height=len(st.session_state.sugerencias) * 45 + 10)
+            
+            # Capturar clics en las sugerencias
+            if sugerencias_component:
+                seleccionar_producto(sugerencias_component)
         
-        # Agregar instrucciones claras
-        with st.expander("Consejos para la búsqueda"):
-            st.markdown("""
-            - Puedes buscar por nombre de producto o principio activo
-            - La búsqueda funciona aunque escribas solo una parte del nombre
-            - Es flexible con los acentos y mayúsculas
-            - Ejemplos:
-                - "2,4D" encontrará todos los productos con 2,4-D
-                - "glifo" encontrará todos los productos con glifosato
-                - "ciperme" encontrará Cipermetrina
-            """)
+        # Mostrar detalles del producto seleccionado
+        if st.session_state.producto_seleccionado:
+            producto = df[df['id'] == st.session_state.producto_seleccionado].iloc[0]
+            
+            # Mostrar información del producto
+            st.success(f"Producto seleccionado: {producto['producto']}")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write(f"**Tipo:** {producto['tipo']}")
+                st.write(f"**Principio activo:** {producto['principio_activo']}")
+            
+            with col2:
+                precio = "s/d" if pd.isna(producto['precio']) else producto['precio']
+                unidad = producto['unidad'] if pd.notna(producto['unidad']) else ""
+                st.write(f"**Precio:** {precio} {unidad}")
+                st.write(f"**Última actualización:** {producto['fecha']}")
+        
+        # Si no hay producto seleccionado pero hay búsqueda, mostrar resultados
+        elif st.session_state.busqueda and not st.session_state.mostrar_sugerencias:
+            resultado = df[df['producto'].str.contains(st.session_state.busqueda, case=False, na=False)]
+            
+            if not resultado.empty:
+                st.write(f"Resultados para '{st.session_state.busqueda}':")
+                st.dataframe(
+                    resultado[['tipo', 'producto', 'principio_activo', 'precio', 'unidad']],
+                    column_config={
+                        "tipo": "Tipo",
+                        "producto": "Producto",
+                        "principio_activo": "Principio Activo",
+                        "precio": st.column_config.NumberColumn("Precio", format="%.2f"),
+                        "unidad": "Unidad"
+                    },
+                    use_container_width=True,
+                    hide_index=True
+                )
+            else:
+                st.warning(f"No se encontraron productos que coincidan con '{st.session_state.busqueda}'")
     
     # Pestaña 2: Lista de Productos
     with tab2:
@@ -524,39 +581,12 @@ def main():
     st.write("### Instrucciones de uso:")
     st.markdown("""
     - En la pestaña **Consulta de Precios** puedes buscar rápidamente los precios de cualquier producto. 
-      Empieza a escribir para ver sugerencias en el menú desplegable.
+      Empieza a escribir para ver sugerencias tipo Google.
     - En **Lista de Productos** puedes ver todos los productos y filtrarlos por tipo.
     - Usa **Agregar Producto** para incluir nuevos productos a tu lista.
     - En **Por Categoría** puedes ver los productos organizados por su tipo y análisis de precios.
     """)
     st.caption("Sistema de Gestión de Agroquímicos - Versión 1.0 - Mayo 2025")
-
-# CSS personalizado para mejorar el estilo del dropdown
-st.markdown("""
-<style>
-    div[data-baseweb="select"] {
-        margin-top: 0px;
-    }
-    
-    .stSelectbox label {
-        font-weight: bold;
-    }
-    
-    .stSelectbox select {
-        padding: 10px;
-        border-radius: 5px;
-    }
-    
-    /* Estilos para el contenedor de búsqueda */
-    .search-container {
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-</style>
-""", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
